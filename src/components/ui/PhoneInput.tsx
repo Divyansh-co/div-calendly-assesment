@@ -32,14 +32,14 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
         )}
         <div
           className={clsx(
-            "flex items-center rounded-xl border bg-surface overflow-hidden shadow-xs transition-all duration-150",
+            "flex items-center rounded-xl border bg-surface overflow-hidden transition-all duration-150 ease-out",
             error
-              ? "border-error ring-1 ring-error"
-              : "border-border hover:border-slate-300 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/20"
+              ? "border-error shadow-[0_0_0_3px_rgba(220,38,38,0.12)]"
+              : "border-border hover:border-slate-300 focus-within:border-primary focus-within:shadow-[0_0_0_3px_rgba(37,99,235,0.12)]"
           )}
         >
           {/* Locked prefix */}
-          <span className="flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-100/80 border-r border-border text-sm font-semibold text-navy-800 select-none shrink-0">
+          <span className="flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-100/90 border-r border-border text-xs font-bold text-navy-800 select-none shrink-0 tracking-wide">
             <span role="img" aria-label="India flag">🇮🇳</span>
             <span>+91</span>
           </span>
@@ -52,7 +52,7 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
             maxLength={10}
             placeholder="98765 43210"
             className={clsx(
-              "flex-1 px-3.5 py-2.5 text-sm font-medium text-navy-900 placeholder:text-slate-400 focus:outline-none bg-transparent border-none",
+              "flex-1 px-3.5 py-2.5 text-sm font-medium text-navy-900 placeholder:text-slate-400 focus:outline-none focus:ring-0 bg-transparent border-none",
               className
             )}
             aria-invalid={!!error}

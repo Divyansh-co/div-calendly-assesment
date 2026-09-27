@@ -93,27 +93,33 @@ export default function App() {
   const isFullWidth = step === 4;
 
   return (
-    <div className="min-h-dvh flex flex-col bg-bg">
-      <main className="flex-1 flex items-start justify-center px-4 py-8 lg:py-14">
+    <div className="min-h-dvh flex flex-col">
+      <main className="flex-1 flex items-start justify-center px-4 py-8 sm:py-12 lg:py-16">
         <div className="w-full max-w-5xl">
           <div
-            className={`card overflow-hidden shadow-card ${
+            className={`card overflow-hidden ${
               isFullWidth ? "max-w-xl mx-auto" : ""
             }`}
+            style={{ borderTop: "3px solid #2563EB" }}
           >
             {isFullWidth ? (
-              // Confirmation: single column
-              <div className="p-6 lg:p-10">{renderRightPanel()}</div>
+              // Confirmation: single column with generous padding
+              <div className="p-8 sm:p-10 lg:p-12">{renderRightPanel()}</div>
             ) : (
-              // Steps 1–3: two-column on desktop
+              // Steps 1–3: two-column on desktop with 32-40px padding
               <div className="flex flex-col lg:flex-row">
-                {/* Left: event details */}
-                <div className="lg:w-[380px] lg:min-w-[380px] p-6 lg:p-8 border-b lg:border-b-0 lg:border-r border-border/80 bg-slate-50/50">
+                {/* Left: event details with subtle gradient anchor */}
+                <div
+                  className="lg:w-[400px] lg:min-w-[400px] p-6 sm:p-8 lg:p-10 border-b lg:border-b-0 lg:border-r border-border"
+                  style={{
+                    background: "linear-gradient(160deg, #EFF6FF 0%, #F8FAFC 35%, #F8FAFC 100%)",
+                  }}
+                >
                   <EventDetails />
                 </div>
 
                 {/* Right: calendar / slots / form */}
-                <div className="flex-1 p-6 lg:p-8 min-w-0 bg-surface">
+                <div className="flex-1 p-6 sm:p-8 lg:p-10 min-w-0 bg-surface">
                   {renderRightPanel()}
                 </div>
               </div>

@@ -32,14 +32,17 @@ export default {
         card: "16px",
       },
       boxShadow: {
-        card: "0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(15, 23, 42, 0.08)",
+        card: "0 1px 2px rgba(15,23,42,0.04), 0 4px 12px rgba(15,23,42,0.06)",
+        "2xs": "0 1px 2px rgba(15,23,42,0.03)",
+        xs: "0 1px 2px rgba(15,23,42,0.04), 0 1px 3px rgba(15,23,42,0.03)",
         sm: "0 1px 2px 0 rgba(15, 23, 42, 0.05)",
         md: "0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05)",
-        lg: "0 12px 24px -4px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04)",
+        lift: "0 4px 12px rgba(37,99,235,0.12), 0 1px 3px rgba(15,23,42,0.06)",
       },
       spacing: {
-        "18": "4.5rem",   // 72px
-        "22": "5.5rem",   // 88px
+        "4.5": "1.125rem",  // 18px — used by BookingSummary padding
+        "18": "4.5rem",    // 72px
+        "22": "5.5rem",    // 88px
       },
     },
   },

@@ -128,10 +128,10 @@ export function BookingForm({
         type="button"
         onClick={onBack}
         aria-label="Back to time selection"
-        className="flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-navy-900 transition-colors duration-150 mb-5 group"
+        className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 hover:text-navy-900 transition-colors duration-150 mb-6 group cursor-pointer"
       >
-        <ChevronLeft size={16} className="text-slate-400 group-hover:text-primary transition-colors" />
-        Back to time selection
+        <ChevronLeft size={16} className="text-slate-400 group-hover:text-primary transition-all duration-150 group-hover:-translate-x-0.5" />
+        <span>Back to time selection</span>
       </button>
 
       <BookingSummary date={date} slot={slot} timezone={timezone} />
@@ -311,7 +311,7 @@ export function BookingForm({
             <button
               type="button"
               onClick={() => setActiveModal("terms")}
-              className="font-semibold text-primary hover:underline focus:outline-none"
+              className="font-semibold text-primary no-underline hover:underline hover:text-primary-hover transition-colors duration-150 focus:outline-none cursor-pointer"
             >
               Participant Terms
             </button>{" "}
@@ -319,7 +319,7 @@ export function BookingForm({
             <button
               type="button"
               onClick={() => setActiveModal("privacy")}
-              className="font-semibold text-primary hover:underline focus:outline-none"
+              className="font-semibold text-primary no-underline hover:underline hover:text-primary-hover transition-colors duration-150 focus:outline-none cursor-pointer"
             >
               Privacy Notice
             </button>

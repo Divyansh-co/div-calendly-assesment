@@ -60,41 +60,42 @@ export function Calendar({
           onSelect={onDateSelect}
         />
       ) : (
-        <div className="min-h-[320px] flex flex-col items-center justify-center p-8 bg-slate-50/70 rounded-2xl border border-dashed border-border/90 text-center my-3">
-          {/* Subtle line-art calendar/clock icon */}
-          <div className="w-16 h-16 rounded-full bg-primary-tint border border-primary/20 flex items-center justify-center mb-4 text-primary shadow-xs ring-8 ring-primary-tint/40">
+        <div className="min-h-[340px] flex flex-col items-center justify-center p-8 sm:p-12 text-center my-3 bg-slate-50/50 rounded-2xl border border-dashed border-border/80">
+          {/* Simple minimal line-art calendar icon in slate-300 */}
+          <div className="w-14 h-14 rounded-2xl bg-white border border-border shadow-xs flex items-center justify-center mb-5 text-slate-300">
             <svg
-              className="w-8 h-8 text-primary"
+              className="w-7 h-7 text-slate-300"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
-              strokeWidth="1.75"
+              strokeWidth="1.5"
               strokeLinecap="round"
               strokeLinejoin="round"
             >
-              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <rect x="3" y="4" width="18" height="18" rx="3" ry="3" />
               <line x1="16" y1="2" x2="16" y2="6" />
               <line x1="8" y1="2" x2="8" y2="6" />
               <line x1="3" y1="10" x2="21" y2="10" />
-              <circle cx="12" cy="15" r="2.5" />
-              <polyline points="12 13.5 12 15 13.5 15" />
+              <line x1="8" y1="14" x2="8.01" y2="14" strokeWidth="2.5" />
+              <line x1="12" y1="14" x2="12.01" y2="14" strokeWidth="2.5" />
+              <line x1="16" y1="14" x2="16.01" y2="14" strokeWidth="2.5" />
             </svg>
           </div>
 
-          <h3 className="text-base font-bold text-navy-900 mb-1.5">
+          <h3 className="text-base font-bold text-navy-900 mb-1.5 tracking-tight">
             No available times in {formatMonthYear(currentMonth)}
           </h3>
           <p className="text-sm text-slate-500 max-w-xs mb-6 leading-relaxed">
-            All consultation slots for this month are fully booked or have passed. Check upcoming months to schedule your call.
+            All consultation slots for this month are fully booked or have passed. Check the upcoming schedule to reserve your spot.
           </p>
 
           <button
             type="button"
             onClick={goNext}
-            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-hover shadow-sm transition-all duration-150 hover:shadow hover:scale-[1.02] active:scale-[0.98]"
+            className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-hover shadow-xs hover:shadow-md transition-all duration-150 active:scale-[0.98]"
           >
             <span>View next month</span>
-            <span aria-hidden="true">→</span>
+            <span className="inline-block transition-transform duration-150 ease-out group-hover:translate-x-1" aria-hidden="true">→</span>
           </button>
         </div>
       )}

@@ -62,16 +62,17 @@ export function TimeSlotList({
 
       {/* Slots */}
       {slots.length === 0 ? (
-        <div className="p-8 text-center bg-slate-50 rounded-xl border border-dashed border-border">
+        <div className="p-8 text-center bg-slate-50/70 rounded-2xl border border-dashed border-border">
           <p className="text-sm font-medium text-slate-600">
             No available times for this date.
           </p>
           <button
             type="button"
             onClick={onBack}
-            className="mt-3 text-sm font-semibold text-primary hover:underline"
+            className="mt-3 text-xs font-semibold text-primary hover:underline inline-flex items-center gap-1 group"
           >
-            ← Choose another date
+            <span className="transition-transform group-hover:-translate-x-0.5">←</span>
+            <span>Choose another date</span>
           </button>
         </div>
       ) : (
@@ -91,16 +92,17 @@ export function TimeSlotList({
                   onClick={() => onSlotSelect(slot)}
                   aria-pressed={isSelected}
                   className={clsx(
-                    "w-full rounded-xl border-2 px-5 py-3.5 text-sm font-bold transition-all duration-150 min-h-[52px] flex items-center justify-between shadow-xs",
+                    "w-full rounded-xl border px-5 py-3.5 text-sm font-semibold transition-all duration-150 ease-out min-h-[52px] flex items-center justify-between cursor-pointer",
+                    "focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2",
                     isSelected
-                      ? "bg-primary border-primary text-white shadow-md scale-[1.01]"
-                      : "bg-surface border-primary/30 text-primary hover:bg-primary-tint hover:border-primary active:scale-[0.99] cursor-pointer"
+                      ? "bg-primary border-primary text-white shadow-sm transform-none"
+                      : "bg-surface border-primary text-primary hover:bg-primary-tint hover:border-primary-hover hover:-translate-y-0.5 hover:shadow-lift active:translate-y-0 active:scale-[0.99]"
                   )}
                 >
-                  <span className="text-base">{displayTime(slot)}</span>
+                  <span className="text-base font-bold">{displayTime(slot)}</span>
                   <span
                     className={clsx(
-                      "text-xs px-2.5 py-1 rounded-full font-semibold",
+                      "text-xs px-2.5 py-1 rounded-full font-semibold transition-colors duration-150",
                       isSelected
                         ? "bg-white/20 text-white"
                         : "bg-primary-tint text-primary border border-primary/20"

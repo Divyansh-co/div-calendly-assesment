@@ -40,10 +40,10 @@ export function CheckboxGroup({
               key={opt.value}
               htmlFor={id}
               className={clsx(
-                "flex items-center gap-2.5 cursor-pointer rounded-xl border px-3.5 py-2.5 text-sm transition-all duration-150 select-none shadow-xs",
+                "group flex items-center gap-2.5 cursor-pointer rounded-xl border px-3.5 py-2.5 text-sm transition-all duration-150 select-none shadow-2xs",
                 checked
                   ? "border-primary bg-primary-tint/70 text-navy-900 font-semibold ring-1 ring-primary/30"
-                  : "border-border bg-surface text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                  : "border-border bg-surface text-slate-700 hover:border-primary/40 hover:bg-primary-tint/20"
               )}
             >
               <input
@@ -53,9 +53,34 @@ export function CheckboxGroup({
                 value={opt.value}
                 checked={checked}
                 onChange={() => toggle(opt.value)}
-                className="w-4 h-4 rounded text-primary accent-primary cursor-pointer focus:ring-primary"
+                className="sr-only"
               />
-              <span>{opt.label}</span>
+              {/* Custom Checkbox Square */}
+              <span
+                className={clsx(
+                  "w-4 h-4 rounded-[5px] border flex items-center justify-center shrink-0 transition-all duration-150 ease-out",
+                  checked
+                    ? "bg-primary border-primary text-white shadow-2xs"
+                    : "bg-white border-slate-300 group-hover:border-primary/60"
+                )}
+                aria-hidden="true"
+              >
+                <svg
+                  className={clsx(
+                    "w-2.5 h-2.5 text-white transition-all duration-150 ease-out",
+                    checked ? "scale-100 opacity-100" : "scale-50 opacity-0"
+                  )}
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polyline points="20 6 9 17 4 12" />
+                </svg>
+              </span>
+              <span className="text-sm font-medium">{opt.label}</span>
             </label>
           );
         })}

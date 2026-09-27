@@ -17,15 +17,15 @@ export function Button({
   ...rest
 }: ButtonProps) {
   const base =
-    "inline-flex items-center justify-center gap-2 font-semibold text-sm rounded-lg transition-colors duration-150 ease-in-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed select-none";
+    "inline-flex items-center justify-center gap-2 font-semibold text-sm rounded-xl transition-all duration-150 ease-out focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2 disabled:cursor-not-allowed select-none cursor-pointer";
 
   const variants = {
     primary:
-      "bg-primary text-white hover:bg-primary-hover active:bg-primary-hover disabled:bg-slate-300 disabled:text-white",
+      "bg-primary text-white shadow-xs hover:bg-primary-hover hover:shadow-md active:scale-[0.98] disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none disabled:active:scale-100 disabled:cursor-not-allowed",
     outline:
-      "border border-border text-slate-500 bg-surface hover:bg-bg hover:border-slate-300 disabled:opacity-50",
+      "border border-border text-slate-700 bg-surface shadow-xs hover:bg-slate-50 hover:border-slate-300 hover:text-navy-900 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed",
     ghost:
-      "text-primary hover:bg-primary-tint disabled:opacity-50",
+      "text-primary hover:bg-primary-tint active:scale-[0.98] disabled:opacity-40",
   };
 
   return (

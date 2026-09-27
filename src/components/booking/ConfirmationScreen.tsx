@@ -52,9 +52,9 @@ export function ConfirmationScreen({
       aria-live="polite"
       aria-label="Booking confirmation"
     >
-      {/* Success icon */}
+      {/* Success icon — bounces in on mount */}
       <div className="flex justify-center">
-        <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center ring-8 ring-success/5 shadow-xs">
+        <div className="success-bounce w-16 h-16 rounded-full bg-success/10 flex items-center justify-center ring-8 ring-success/5 shadow-xs">
           <CheckCircle className="text-success" size={36} strokeWidth={2} />
         </div>
       </div>

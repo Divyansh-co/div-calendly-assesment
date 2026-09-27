@@ -41,10 +41,10 @@ export function RadioGroup({
               key={opt.value}
               htmlFor={id}
               className={clsx(
-                "flex items-center gap-3 cursor-pointer rounded-xl border p-3.5 text-sm transition-all duration-150 select-none shadow-xs",
+                "group flex items-center gap-3.5 cursor-pointer rounded-xl border p-3.5 text-sm transition-all duration-150 select-none shadow-2xs",
                 checked
-                  ? "border-primary bg-primary-tint/60 text-navy-900 font-semibold ring-1 ring-primary/40 shadow-xs"
-                  : "border-border bg-surface text-slate-700 hover:border-slate-300 hover:bg-slate-50"
+                  ? "border-primary bg-primary-tint/60 text-navy-900 font-semibold ring-1 ring-primary/30"
+                  : "border-border bg-surface text-slate-700 hover:border-primary/40 hover:bg-primary-tint/20"
               )}
             >
               <input
@@ -55,15 +55,32 @@ export function RadioGroup({
                 checked={checked}
                 onChange={() => onChange(opt.value)}
                 onBlur={onBlur}
-                className="w-4 h-4 text-primary accent-primary cursor-pointer focus:ring-primary"
+                className="sr-only"
               />
-              <span className="flex-1">{opt.label}</span>
+              {/* Custom Radio Circle */}
+              <span
+                className={clsx(
+                  "w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-all duration-150 ease-out",
+                  checked
+                    ? "border-primary bg-white ring-2 ring-primary/20"
+                    : "border-slate-300 bg-white group-hover:border-primary/60"
+                )}
+                aria-hidden="true"
+              >
+                <span
+                  className={clsx(
+                    "w-2 h-2 rounded-full bg-primary transition-transform duration-150 ease-out",
+                    checked ? "scale-100 opacity-100" : "scale-0 opacity-0"
+                  )}
+                />
+              </span>
+              <span className="flex-1 text-sm font-medium">{opt.label}</span>
             </label>
           );
         })}
       </div>
       {error && (
-        <p className="form-error mt-1.5" role="alert">
+        <p className="form-error" role="alert">
           {error}
         </p>
       )}
