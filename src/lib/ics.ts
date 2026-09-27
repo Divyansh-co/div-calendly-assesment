@@ -19,7 +19,12 @@ function generateUID(): string {
   return `${Date.now()}-${Math.random().toString(36).slice(2)}@divyansh.booking`;
 }
 
-export function generateICS(date: Date, slot: TimeSlot, attendeeEmail: string): string {
+export function generateICS(
+  date: Date,
+  slot: TimeSlot,
+  attendeeEmail: string,
+  attendeeName?: string
+): string {
   const startStr = toICSLocal(date, slot.hour, slot.minute);
   const endHour = Math.floor((slot.hour * 60 + slot.minute + MEETING_DURATION_MINUTES) / 60);
   const endMinute = (slot.hour * 60 + slot.minute + MEETING_DURATION_MINUTES) % 60;
@@ -29,6 +34,8 @@ export function generateICS(date: Date, slot: TimeSlot, attendeeEmail: string): 
   const dtstamp =
     `${now.getUTCFullYear()}${pad(now.getUTCMonth() + 1)}${pad(now.getUTCDate())}` +
     `T${pad(now.getUTCHours())}${pad(now.getUTCMinutes())}${pad(now.getUTCSeconds())}Z`;
+
+  const safeAttendeeName = attendeeName?.trim() || "Attendee";
 
   return [
     "BEGIN:VCALENDAR",
@@ -52,7 +59,7 @@ export function generateICS(date: Date, slot: TimeSlot, attendeeEmail: string): 
     `DTEND;TZID=Asia/Kolkata:${endStr}`,
     `SUMMARY:${EVENT_TITLE}`,
     `ORGANIZER;CN=${HOST_NAME}:mailto:noreply@divyansh.booking`,
-    `ATTENDEE;CN=Attendee:mailto:${attendeeEmail}`,
+    `ATTENDEE;CN=${safeAttendeeName}:mailto:${attendeeEmail}`,
     `DESCRIPTION:A personal consultation call with ${HOST_NAME}.\\nPlease join on time from a quiet place.`,
     "STATUS:CONFIRMED",
     "END:VEVENT",
@@ -60,8 +67,13 @@ export function generateICS(date: Date, slot: TimeSlot, attendeeEmail: string): 
   ].join("\r\n");
 }
 
-export function downloadICS(date: Date, slot: TimeSlot, email: string): void {
-  const content = generateICS(date, slot, email);
+export function downloadICS(
+  date: Date,
+  slot: TimeSlot,
+  email: string,
+  attendeeName?: string
+): void {
+  const content = generateICS(date, slot, email, attendeeName);
   const blob = new Blob([content], { type: "text/calendar;charset=utf-8" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");

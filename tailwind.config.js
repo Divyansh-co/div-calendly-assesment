@@ -6,10 +6,12 @@ export default {
       colors: {
         navy: {
           900: "#0B1F33",
-          700: "#0F172A",
+          800: "#0F172A",
+          700: "#1E293B",
         },
         slate: {
           300: "#94A3B8",
+          400: "#64748B",
           500: "#475569",
         },
         border: "#E2E8F0",
@@ -27,13 +29,15 @@ export default {
         sans: ["Inter", "system-ui", "-apple-system", "Segoe UI", "sans-serif"],
       },
       borderRadius: {
-        card: "12px",
+        card: "16px",
       },
       boxShadow: {
-        card: "0 1px 3px rgba(15,23,42,0.06)",
+        card: "0 10px 25px -5px rgba(15, 23, 42, 0.06), 0 8px 10px -6px rgba(15, 23, 42, 0.04), 0 0 0 1px rgba(15, 23, 42, 0.08)",
+        sm: "0 1px 2px 0 rgba(15, 23, 42, 0.05)",
+        md: "0 4px 6px -1px rgba(15, 23, 42, 0.07), 0 2px 4px -2px rgba(15, 23, 42, 0.05)",
+        lg: "0 12px 24px -4px rgba(15, 23, 42, 0.08), 0 4px 6px -2px rgba(15, 23, 42, 0.04)",
       },
       spacing: {
-        // enforce 8px base grid via named tokens where helpful
         "18": "4.5rem",   // 72px
         "22": "5.5rem",   // 88px
       },

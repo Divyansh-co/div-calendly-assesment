@@ -60,15 +60,41 @@ export function Calendar({
           onSelect={onDateSelect}
         />
       ) : (
-        <div className="py-8 text-center">
-          <p className="text-sm text-slate-500 mb-2">
+        <div className="min-h-[320px] flex flex-col items-center justify-center p-8 bg-slate-50/70 rounded-2xl border border-dashed border-border/90 text-center my-3">
+          {/* Subtle line-art calendar/clock icon */}
+          <div className="w-16 h-16 rounded-full bg-primary-tint border border-primary/20 flex items-center justify-center mb-4 text-primary shadow-xs ring-8 ring-primary-tint/40">
+            <svg
+              className="w-8 h-8 text-primary"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.75"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+              <line x1="16" y1="2" x2="16" y2="6" />
+              <line x1="8" y1="2" x2="8" y2="6" />
+              <line x1="3" y1="10" x2="21" y2="10" />
+              <circle cx="12" cy="15" r="2.5" />
+              <polyline points="12 13.5 12 15 13.5 15" />
+            </svg>
+          </div>
+
+          <h3 className="text-base font-bold text-navy-900 mb-1.5">
             No available times in {formatMonthYear(currentMonth)}
+          </h3>
+          <p className="text-sm text-slate-500 max-w-xs mb-6 leading-relaxed">
+            All consultation slots for this month are fully booked or have passed. Check upcoming months to schedule your call.
           </p>
+
           <button
+            type="button"
             onClick={goNext}
-            className="text-sm font-medium text-primary hover:text-primary-hover transition-colors duration-150"
+            className="inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary text-white text-sm font-semibold hover:bg-primary-hover shadow-sm transition-all duration-150 hover:shadow hover:scale-[1.02] active:scale-[0.98]"
           >
-            View next month →
+            <span>View next month</span>
+            <span aria-hidden="true">→</span>
           </button>
         </div>
       )}

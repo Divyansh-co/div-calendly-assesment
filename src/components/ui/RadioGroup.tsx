@@ -30,9 +30,9 @@ export function RadioGroup({
   );
 
   return (
-    <fieldset>
+    <fieldset className="space-y-1.5">
       <legend className="form-label">{label}</legend>
-      <div className="flex flex-col gap-2.5 mt-1">
+      <div className="grid grid-cols-1 gap-2.5 mt-1">
         {normalised.map((opt) => {
           const id = `${name}-${opt.value}`;
           const checked = value === opt.value;
@@ -41,10 +41,10 @@ export function RadioGroup({
               key={opt.value}
               htmlFor={id}
               className={clsx(
-                "flex items-center gap-3 cursor-pointer rounded-lg border px-3 py-2.5 text-sm transition-colors duration-150",
+                "flex items-center gap-3 cursor-pointer rounded-xl border p-3.5 text-sm transition-all duration-150 select-none shadow-xs",
                 checked
-                  ? "border-primary bg-primary-tint text-navy-700 font-medium"
-                  : "border-border bg-surface text-slate-500 hover:border-slate-300 hover:bg-bg"
+                  ? "border-primary bg-primary-tint/60 text-navy-900 font-semibold ring-1 ring-primary/40 shadow-xs"
+                  : "border-border bg-surface text-slate-700 hover:border-slate-300 hover:bg-slate-50"
               )}
             >
               <input
@@ -55,9 +55,9 @@ export function RadioGroup({
                 checked={checked}
                 onChange={() => onChange(opt.value)}
                 onBlur={onBlur}
-                className="w-4 h-4 accent-primary"
+                className="w-4 h-4 text-primary accent-primary cursor-pointer focus:ring-primary"
               />
-              {opt.label}
+              <span className="flex-1">{opt.label}</span>
             </label>
           );
         })}

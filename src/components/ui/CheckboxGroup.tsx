@@ -29,9 +29,9 @@ export function CheckboxGroup({
   };
 
   return (
-    <fieldset>
+    <fieldset className="space-y-1.5">
       <legend className="form-label">{label}</legend>
-      <div className="flex flex-wrap gap-2 mt-1">
+      <div className="flex flex-wrap gap-2.5 mt-1">
         {options.map((opt) => {
           const checked = values.includes(opt.value);
           const id = `${name}-${opt.value}`;
@@ -40,10 +40,10 @@ export function CheckboxGroup({
               key={opt.value}
               htmlFor={id}
               className={clsx(
-                "flex items-center gap-2 cursor-pointer rounded-lg border px-3 py-2 text-sm transition-colors duration-150 select-none",
+                "flex items-center gap-2.5 cursor-pointer rounded-xl border px-3.5 py-2.5 text-sm transition-all duration-150 select-none shadow-xs",
                 checked
-                  ? "border-primary bg-primary-tint text-navy-700 font-medium"
-                  : "border-border bg-surface text-slate-500 hover:border-slate-300 hover:bg-bg"
+                  ? "border-primary bg-primary-tint/70 text-navy-900 font-semibold ring-1 ring-primary/30"
+                  : "border-border bg-surface text-slate-700 hover:border-slate-300 hover:bg-slate-50"
               )}
             >
               <input
@@ -53,9 +53,9 @@ export function CheckboxGroup({
                 value={opt.value}
                 checked={checked}
                 onChange={() => toggle(opt.value)}
-                className="w-4 h-4 accent-primary"
+                className="w-4 h-4 rounded text-primary accent-primary cursor-pointer focus:ring-primary"
               />
-              {opt.label}
+              <span>{opt.label}</span>
             </label>
           );
         })}

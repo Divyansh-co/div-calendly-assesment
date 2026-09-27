@@ -36,22 +36,22 @@
 @layer components {
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg
-           bg-primary text-white font-semibold text-sm
-           transition-colors duration-150 ease-in-out
-           hover:bg-primary-hover active:bg-primary-hover
-           disabled:bg-slate-300 disabled:cursor-not-allowed disabled:text-white;
+           bg-primary text-white font-semibold text-sm shadow-sm
+           transition-all duration-150 ease-in-out
+           hover:bg-primary-hover hover:shadow active:scale-[0.99]
+           disabled:bg-slate-200 disabled:cursor-not-allowed disabled:text-slate-400 disabled:shadow-none;
     min-height: 48px;
   }
 
   .btn-outline {
-    @apply inline-flex items-center justify-center gap-2 px-4 py-2 rounded-lg
-           border border-border text-slate-500 font-medium text-sm
-           transition-colors duration-150 ease-in-out
-           hover:bg-bg hover:border-slate-300;
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg
+           border border-border bg-surface text-slate-700 font-medium text-sm shadow-xs
+           transition-all duration-150 ease-in-out
+           hover:bg-slate-50 hover:border-slate-300 hover:text-navy-900 active:scale-[0.99];
   }
 
   .card {
-    @apply bg-surface border border-border rounded-card shadow-card;
+    @apply bg-surface border border-border/80 rounded-card shadow-card;
   }
 
   .form-label {

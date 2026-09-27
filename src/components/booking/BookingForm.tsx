@@ -1,6 +1,6 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import { ChevronLeft, Plus, X } from "lucide-react";
+import { ChevronLeft, Plus, X, Shield, FileText } from "lucide-react";
 import type { BookingFormData, FormErrors, TimeSlot } from "../../types/booking";
 import { TextInput } from "../ui/TextInput";
 import { RadioGroup } from "../ui/RadioGroup";
@@ -40,10 +40,9 @@ export function BookingForm({
   const [guestEmail, setGuestEmail] = useState("");
   const [guestError, setGuestError] = useState<string | undefined>();
   const [submitting, setSubmitting] = useState(false);
+  const [activeModal, setActiveModal] = useState<"terms" | "privacy" | null>(null);
 
-  // Honeypot field — must remain empty. Bots that auto-fill all fields will
-  // populate this and be silently rejected. A real backend should also check
-  // this server-side and enforce rate limiting per IP/email/phone.
+  // Honeypot field — must remain empty.
   const [honeypot, setHoneypot] = useState("");
 
   const setField = <K extends keyof BookingFormData>(
@@ -76,14 +75,25 @@ export function BookingForm({
     setField("guests", formData.guests.filter((g) => g !== email));
   };
 
+  // Check if all required fields are filled and valid
+  const currentValidationErrors = validateAll(formData);
+  const isFormValid =
+    Boolean(formData.firstName.trim()) &&
+    Boolean(formData.lastName.trim()) &&
+    Boolean(formData.email.trim()) &&
+    Boolean(formData.city.trim()) &&
+    Boolean(formData.hometown) &&
+    Boolean(formData.income) &&
+    formData.whatsapp.trim().length === 10 &&
+    Object.keys(currentValidationErrors).length === 0;
+
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    // Honeypot check — silent rejection; never reveal the reason to the submitter.
+    // Honeypot check — silent rejection
     if (honeypot) return;
 
-    // Re-validate everything on submit regardless of prior blur state.
-    // This is the definitive gate before any data is processed.
+    // Re-validate everything on submit
     const allErrors = validateAll(formData);
     if (Object.keys(allErrors).length > 0) {
       setErrors(allErrors);
@@ -92,37 +102,42 @@ export function BookingForm({
       return;
     }
 
-    // Guard against double-submission (button also disables, but this is a belt+suspenders check).
     if (submitting) return;
 
     setSubmitting(true);
-    // Simulated async submission (~800ms).
-    // NOTE: No PII is logged here. In a real integration, errors from the API
-    // should show a generic user-facing message only — never log raw field values.
+    // Simulated async submission (~800ms)
     await new Promise((r) => setTimeout(r, 800));
     setSubmitting(false);
     onConfirm();
   };
 
+  const handleDisabledSubmitClick = () => {
+    if (!isFormValid && !submitting) {
+      const allErrors = validateAll(formData);
+      setErrors(allErrors);
+      const firstKey = Object.keys(allErrors)[0];
+      if (firstKey) {
+        document.getElementById(firstKey)?.focus();
+      }
+    }
+  };
+
   return (
     <div className="step-enter">
       <button
+        type="button"
         onClick={onBack}
         aria-label="Back to time selection"
-        className="flex items-center gap-1.5 text-sm text-slate-500 hover:text-navy-700 transition-colors duration-150 mb-5"
+        className="flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-navy-900 transition-colors duration-150 mb-5 group"
       >
-        <ChevronLeft size={16} />
-        Back
+        <ChevronLeft size={16} className="text-slate-400 group-hover:text-primary transition-colors" />
+        Back to time selection
       </button>
 
       <BookingSummary date={date} slot={slot} timezone={timezone} />
 
       <form onSubmit={handleSubmit} noValidate aria-live="polite">
-        {/*
-          Honeypot field — hidden from real users via CSS (not `display:none` which
-          some bots detect and skip). If populated, submission is rejected silently.
-          TODO (backend): also validate this server-side before persisting any data.
-        */}
+        {/* Honeypot field */}
         <div
           aria-hidden="true"
           style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", overflow: "hidden" }}
@@ -139,8 +154,8 @@ export function BookingForm({
           />
         </div>
 
-        <div className="space-y-5">
-          {/* Name row — stacked on mobile, side-by-side on sm+ */}
+        <div className="space-y-6">
+          {/* Name row */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <TextInput
               id="firstName"
@@ -179,13 +194,13 @@ export function BookingForm({
           {/* Guest emails */}
           <div>
             {formData.guests.map((g) => (
-              <div key={g} className="flex items-center gap-2 text-sm text-slate-500 mb-1.5">
-                <span className="flex-1 truncate">{g}</span>
+              <div key={g} className="flex items-center gap-2 text-sm text-navy-800 bg-slate-50 border border-border px-3 py-1.5 rounded-lg mb-2">
+                <span className="flex-1 truncate font-medium">{g}</span>
                 <button
                   type="button"
                   onClick={() => removeGuest(g)}
-                  aria-label={`Remove guest`}
-                  className="text-slate-300 hover:text-error transition-colors duration-150"
+                  aria-label={`Remove guest ${g}`}
+                  className="text-slate-400 hover:text-error transition-colors p-1"
                 >
                   <X size={14} />
                 </button>
@@ -196,7 +211,7 @@ export function BookingForm({
               <div className="flex gap-2">
                 <TextInput
                   id="guestEmail"
-                  placeholder="guest@example.com"
+                  placeholder="colleague@example.com"
                   type="email"
                   value={guestEmail}
                   onChange={(e) => setGuestEmail(e.target.value)}
@@ -210,7 +225,7 @@ export function BookingForm({
                 <button
                   type="button"
                   onClick={addGuest}
-                  className="shrink-0 px-3 py-2 rounded-lg text-sm font-medium bg-primary text-white hover:bg-primary-hover transition-colors duration-150"
+                  className="shrink-0 px-4 py-2 rounded-xl text-sm font-semibold bg-primary text-white hover:bg-primary-hover transition-colors shadow-xs"
                 >
                   Add
                 </button>
@@ -221,18 +236,18 @@ export function BookingForm({
                     setGuestEmail("");
                     setGuestError(undefined);
                   }}
-                  className="shrink-0 p-2 text-slate-300 hover:text-slate-500 transition-colors duration-150"
+                  className="shrink-0 p-2 text-slate-400 hover:text-slate-600 transition-colors"
                 >
-                  <X size={16} />
+                  <X size={18} />
                 </button>
               </div>
             ) : (
               <button
                 type="button"
                 onClick={() => setGuestInputVisible(true)}
-                className="flex items-center gap-1.5 text-sm font-medium text-primary hover:text-primary-hover transition-colors duration-150 mt-1"
+                className="inline-flex items-center gap-1.5 text-sm font-semibold text-primary hover:text-primary-hover transition-colors mt-1 p-1"
               >
-                <Plus size={14} />
+                <Plus size={16} />
                 Add guests
               </button>
             )}
@@ -241,7 +256,7 @@ export function BookingForm({
           <TextInput
             id="city"
             label="Which city are you based in? *"
-            placeholder="e.g. Noida"
+            placeholder="e.g. Noida, Gurgaon, Delhi"
             value={formData.city}
             onChange={(e) => setField("city", e.target.value)}
             onBlur={() => blurField("city")}
@@ -275,7 +290,7 @@ export function BookingForm({
           />
 
           <CheckboxGroup
-            label="How much land you want to buy?"
+            label="How much land you want to buy? (Optional)"
             name="landSize"
             options={LAND_SIZE_OPTIONS}
             values={formData.landSize}
@@ -285,36 +300,121 @@ export function BookingForm({
           <PhoneInput
             id="whatsapp"
             label="What is your WhatsApp number? *"
-            placeholder="9876543210"
             value={formData.whatsapp}
             onChange={(e) => setField("whatsapp", e.target.value)}
             onBlur={() => blurField("whatsapp")}
             error={errors.whatsapp}
           />
 
-          <p className="text-xs text-slate-500 leading-relaxed">
+          <p className="text-xs text-slate-500 leading-relaxed pt-2 border-t border-border/80">
             By proceeding, you confirm that you have read and agree to Divyansh Mishra's{" "}
-            <a href="#" className="text-primary hover:underline">
+            <button
+              type="button"
+              onClick={() => setActiveModal("terms")}
+              className="font-semibold text-primary hover:underline focus:outline-none"
+            >
               Participant Terms
-            </a>{" "}
+            </button>{" "}
             and{" "}
-            <a href="#" className="text-primary hover:underline">
+            <button
+              type="button"
+              onClick={() => setActiveModal("privacy")}
+              className="font-semibold text-primary hover:underline focus:outline-none"
+            >
               Privacy Notice
-            </a>
+            </button>
             .
           </p>
 
-          <Button
-            type="submit"
-            fullWidth
-            loading={submitting}
-            disabled={submitting}
-            className="mt-2"
-          >
-            {submitting ? "Scheduling…" : "Schedule Event"}
-          </Button>
+          {/* Schedule Event button with disabled-until-valid behavior */}
+          <div onClick={handleDisabledSubmitClick} className="w-full">
+            <Button
+              type="submit"
+              fullWidth
+              loading={submitting}
+              disabled={!isFormValid || submitting}
+              className="mt-2 text-base font-semibold shadow-sm"
+            >
+              {submitting ? "Scheduling…" : "Schedule Event"}
+            </Button>
+          </div>
+          {!isFormValid && (
+            <p className="text-xs text-slate-400 text-center font-medium">
+              Please complete all required fields (*) to schedule your appointment
+            </p>
+          )}
         </div>
       </form>
+
+      {/* Terms & Privacy Modals */}
+      {activeModal && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/60 backdrop-blur-xs animate-in fade-in duration-200"
+        >
+          <div className="card w-full max-w-lg p-6 bg-surface shadow-lg space-y-4 max-h-[85vh] overflow-y-auto">
+            <div className="flex items-center justify-between pb-3 border-b border-border">
+              <div className="flex items-center gap-2">
+                {activeModal === "terms" ? (
+                  <FileText className="text-primary" size={20} />
+                ) : (
+                  <Shield className="text-primary" size={20} />
+                )}
+                <h3 className="text-base font-bold text-navy-900">
+                  {activeModal === "terms" ? "Participant Terms" : "Privacy Notice"}
+                </h3>
+              </div>
+              <button
+                type="button"
+                onClick={() => setActiveModal(null)}
+                aria-label="Close modal"
+                className="p-1 rounded-lg text-slate-400 hover:text-navy-900 hover:bg-slate-100 transition-colors"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            <div className="text-sm text-slate-600 space-y-3 leading-relaxed">
+              {activeModal === "terms" ? (
+                <>
+                  <p>
+                    <strong>1. Scope of Consultation:</strong> This appointment is a private, 1-on-1 strategy consultation on agricultural land investment frameworks. It does not constitute formal real estate brokerage or legal advisory.
+                  </p>
+                  <p>
+                    <strong>2. Punctuality & Attendance:</strong> Slots are strictly reserved. Attendees must join within 5 minutes of scheduled start time. Missed sessions without 24 hours prior notice require a ₹5,000 rescheduling fee.
+                  </p>
+                  <p>
+                    <strong>3. Readiness:</strong> Attendees acknowledge that investments discussed require active capital deployment within 30 days and genuine investment interest.
+                  </p>
+                </>
+              ) : (
+                <>
+                  <p>
+                    <strong>1. Information Collection:</strong> We collect your name, email, phone number, and investment preferences solely for scheduling and conducting your consultation call.
+                  </p>
+                  <p>
+                    <strong>2. Zero Tracking / Zero Sale:</strong> Your personal data is never sold, leased, or shared with third-party marketers or brokers.
+                  </p>
+                  <p>
+                    <strong>3. Retention:</strong> Details are stored strictly in memory for this session and can be purged upon request.
+                  </p>
+                </>
+              )}
+            </div>
+
+            <div className="pt-3 border-t border-border flex justify-end">
+              <button
+                type="button"
+                onClick={() => setActiveModal(null)}
+                className="btn-primary px-5 py-2 min-h-0 text-xs font-semibold"
+              >
+                I Understand
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

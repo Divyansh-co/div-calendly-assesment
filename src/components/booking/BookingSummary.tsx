@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { ChevronDown, ChevronUp } from "lucide-react";
+import { ChevronDown, ChevronUp, Calendar, Clock, Globe } from "lucide-react";
 import type { TimeSlot } from "../../types/booking";
 import { formatLongDate, convertSlotTime } from "../../lib/date-utils";
 import {
   EVENT_TITLE,
-  HOST_NAME,
   MEETING_DURATION_LABEL,
   SUPPORTED_TIMEZONES,
 } from "../../constants/config";
@@ -33,45 +32,51 @@ export function BookingSummary({ date, slot, timezone }: BookingSummaryProps) {
       : convertSlotTime(date, endHour, endMin, timezone);
 
   return (
-    <div className="card p-4 mb-6 text-sm space-y-2">
-      <p className="font-semibold text-navy-900">{EVENT_TITLE}</p>
+    <div className="card p-4.5 mb-6 text-sm space-y-3 bg-primary-tint/25 border border-primary/15 rounded-2xl">
+      <div>
+        <span className="text-[11px] font-bold uppercase tracking-wider text-primary block mb-0.5">
+          Selected Consultation
+        </span>
+        <p className="font-bold text-navy-900 text-base">{EVENT_TITLE}</p>
+      </div>
 
-      <div className="text-slate-500 space-y-1">
-        <p>
-          <span className="text-xs uppercase tracking-wide text-slate-300 mr-1">Host</span>
-          {HOST_NAME}
-        </p>
-        <p>
-          <span className="text-xs uppercase tracking-wide text-slate-300 mr-1">Duration</span>
-          {MEETING_DURATION_LABEL}
-        </p>
-        <p>
-          <span className="text-xs uppercase tracking-wide text-slate-300 mr-1">Date</span>
-          {formatLongDate(date)}
-        </p>
-        <p>
-          <span className="text-xs uppercase tracking-wide text-slate-300 mr-1">Time</span>
-          {slotLabel} – {endLabel}
-        </p>
-        <p>
-          <span className="text-xs uppercase tracking-wide text-slate-300 mr-1">Zone</span>
-          {tzLabel}
-        </p>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 pt-2 border-t border-border/70 text-xs">
+        <div className="flex items-center gap-2 text-slate-700">
+          <Calendar size={14} className="text-primary shrink-0" />
+          <span className="font-semibold text-navy-900">{formatLongDate(date)}</span>
+        </div>
+        <div className="flex items-center gap-2 text-slate-700">
+          <Clock size={14} className="text-primary shrink-0" />
+          <span className="font-semibold text-navy-900">{slotLabel} – {endLabel} ({MEETING_DURATION_LABEL})</span>
+        </div>
+        <div className="flex items-center gap-2 text-slate-600 sm:col-span-2">
+          <Globe size={14} className="text-primary shrink-0" />
+          <span>{tzLabel}</span>
+        </div>
       </div>
 
       {/* Collapsible description row */}
-      <div className="border-t border-border pt-2">
+      <div className="border-t border-border/70 pt-2.5">
         <button
+          type="button"
           onClick={() => setDescOpen((v) => !v)}
-          className="flex items-center gap-1 text-xs font-medium text-slate-500 hover:text-primary transition-colors duration-150"
+          className="flex items-center gap-1.5 text-xs font-semibold text-primary hover:text-primary-hover transition-colors duration-150"
           aria-expanded={descOpen}
         >
-          Description {descOpen ? <ChevronUp size={12} /> : <ChevronDown size={12} />}
+          {descOpen ? (
+            <>
+              Hide details <ChevronUp size={13} />
+            </>
+          ) : (
+            <>
+              View call outline <ChevronDown size={13} />
+            </>
+          )}
         </button>
         {descOpen && (
-          <p className="text-xs text-slate-500 mt-2 leading-relaxed">
+          <p className="text-xs text-slate-600 mt-2 leading-relaxed bg-white/60 p-2.5 rounded-lg border border-border/60">
             A personal 1-hour consultation on wealth multiplication through agricultural land
-            investments. Taken personally by {HOST_NAME}. Slots are limited — please join on time.
+            investments with Divyansh Mishra. Slots are strictly limited — please join on time.
           </p>
         )}
       </div>

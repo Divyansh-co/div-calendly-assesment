@@ -16,7 +16,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     const resolvedMax = maxLength ?? FIELD_MAX_LENGTHS[id];
 
     return (
-      <div className="flex flex-col gap-1">
+      <div className="flex flex-col gap-1.5">
         {label && (
           <label htmlFor={id} className="form-label">
             {label}
@@ -27,8 +27,10 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           id={id}
           maxLength={resolvedMax}
           className={clsx(
-            "form-input",
-            error && "border-error focus:border-error focus:ring-error/20",
+            "w-full rounded-xl border bg-surface px-3.5 py-2.5 text-sm font-medium text-navy-900 placeholder:text-slate-400 shadow-xs transition-all duration-150",
+            error
+              ? "border-error ring-1 ring-error"
+              : "border-border hover:border-slate-300 focus:border-primary focus:ring-2 focus:ring-primary/20",
             className
           )}
           aria-invalid={!!error}
