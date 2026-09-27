@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Book a personal 60-minute consultation with Divyansh Mishra on wealth multiplication through agricultural land investments." />
+
+    <!--
+      Content-Security-Policy
+      ─────────────────────────────────────────────────────────────────────────
+      NOTE: These meta-tag CSP headers are enforced by the browser. When deployed
+      behind a proper server (Nginx, Vercel, Cloudflare), move these to HTTP
+      response headers instead — HTTP-header CSP is stronger and supports
+      additional directives like `report-uri`.
+
+      script-src  : only scripts from this origin (Vite bundles). No inline scripts
+                    are permitted; if Vite requires 'unsafe-inline' during dev, that
+                    only applies in development mode, not the production build.
+      style-src   : self + Google Fonts stylesheet CDN
+      font-src    : Google Fonts gstatic CDN (for Inter)
+      img-src     : self + data URIs (used by favicon and inline SVG)
+      connect-src : self only (no third-party API calls at this time)
+      frame-ancestors: 'none' is the meta-tag equivalent of X-Frame-Options: DENY
+    -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="
+        default-src 'self';
+        script-src 'self';
+        style-src 'self' https://fonts.googleapis.com 'unsafe-inline';
+        font-src 'self' https://fonts.gstatic.com;
+        img-src 'self' data:;
+        connect-src 'self';
+        frame-ancestors 'none';
+        base-uri 'self';
+        form-action 'self';
+      "
+    />
+
+    <!--
+      Additional security headers (these only take effect as HTTP headers on a server).
+      Documented here so the deployment team knows to configure them.
+
+        X-Content-Type-Options: nosniff
+        X-Frame-Options: DENY
+        Referrer-Policy: strict-origin-when-cross-origin
+        Permissions-Policy: camera=(), microphone=(), geolocation=()
+    -->
+
+    <title>Book a Meeting · Divyansh Mishra</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
