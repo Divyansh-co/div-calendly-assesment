@@ -33,7 +33,6 @@ export function CalendarGrid({
 
   return (
     <div key={`${year}-${month}`} className="month-enter">
-      {/* Weekday headers */}
       <div className="grid grid-cols-7 mb-2">
         {MON_SUN.map((d) => (
           <div
@@ -45,7 +44,6 @@ export function CalendarGrid({
         ))}
       </div>
 
-      {/* Date cells */}
       <div className="space-y-1">
         {weeks.map((week, wi) => (
           <div key={wi} className="grid grid-cols-7 gap-1">

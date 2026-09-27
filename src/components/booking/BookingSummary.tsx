@@ -55,7 +55,6 @@ export function BookingSummary({ date, slot, timezone }: BookingSummaryProps) {
         </div>
       </div>
 
-      {/* Collapsible description row */}
       <div className="border-t border-border/70 pt-2.5">
         <button
           type="button"

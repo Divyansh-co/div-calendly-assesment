@@ -1,4 +1,3 @@
-
 import { clsx } from "clsx";
 
 interface Option {
@@ -55,7 +54,6 @@ export function CheckboxGroup({
                 onChange={() => toggle(opt.value)}
                 className="sr-only"
               />
-              {/* Custom Checkbox Square */}
               <span
                 className={clsx(
                   "w-4 h-4 rounded-[5px] border flex items-center justify-center shrink-0 transition-all duration-150 ease-out",

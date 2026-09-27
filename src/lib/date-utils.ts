@@ -12,7 +12,7 @@ export function formatLongDate(date: Date): string {
   return `${LONG_WEEKDAYS[date.getDay()]}, ${MONTHS[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`;
 }
 
-/** Returns 1-indexed weeks for a calendar grid (Mon–Sun order). */
+// Mon–Sun calendar grid
 export function getCalendarWeeks(year: number, month: number): (Date | null)[][] {
   const firstDay = new Date(year, month, 1);
   // Monday = 0 … Sunday = 6
@@ -34,10 +34,6 @@ export function getCalendarWeeks(year: number, month: number): (Date | null)[][]
 
 export { MONTHS };
 
-/**
- * Converts a wall-clock slot time on a specific date (in IST) into the
- * display time for a given IANA timezone.
- */
 export function convertSlotTime(
   date: Date,
   hour: number,

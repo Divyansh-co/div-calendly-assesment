@@ -1,5 +1,3 @@
-
-
 import { useState } from "react";
 import { Shield, FileText, Cookie, X, Check } from "lucide-react";
 
@@ -49,7 +47,6 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Footer Modals */}
       {activeModal && (
         <div
           role="dialog"

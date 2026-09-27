@@ -8,7 +8,6 @@ interface TimezoneSelectorProps {
 }
 
 export function TimezoneSelector({ value, onChange }: TimezoneSelectorProps) {
-  // Live ticking clock state
   const [currentTime, setCurrentTime] = useState(() => new Date());
 
   useEffect(() => {

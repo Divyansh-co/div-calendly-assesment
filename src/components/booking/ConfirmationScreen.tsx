@@ -1,4 +1,3 @@
-
 import { CheckCircle, CalendarPlus, RotateCcw } from "lucide-react";
 import type { TimeSlot } from "../../types/booking";
 import { formatLongDate, convertSlotTime } from "../../lib/date-utils";
@@ -52,7 +51,6 @@ export function ConfirmationScreen({
       aria-live="polite"
       aria-label="Booking confirmation"
     >
-      {/* Success icon — bounces in on mount */}
       <div className="flex justify-center">
         <div className="success-bounce w-16 h-16 rounded-full bg-success/10 flex items-center justify-center ring-8 ring-success/5 shadow-xs">
           <CheckCircle className="text-success" size={36} strokeWidth={2} />
@@ -68,7 +66,6 @@ export function ConfirmationScreen({
         </p>
       </div>
 
-      {/* Summary card */}
       <div className="card p-5 text-left space-y-4 text-sm bg-slate-50/50 border border-border/80">
         <div>
           <p className="text-xs uppercase font-semibold tracking-wider text-slate-400 mb-0.5">Event</p>
@@ -105,7 +102,6 @@ export function ConfirmationScreen({
         </div>
       </div>
 
-      {/* Actions */}
       <div className="flex flex-col gap-3 pt-2">
         <Button
           variant="primary"

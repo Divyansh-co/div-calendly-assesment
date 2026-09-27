@@ -15,7 +15,6 @@ export function EventDetails() {
 
   return (
     <div className="space-y-6">
-      {/* Host avatar brand mark */}
       <div className="flex items-center gap-3.5">
         <div
           className="w-12 h-12 rounded-full flex items-center justify-center text-white font-bold text-base ring-4 ring-primary/10 select-none shrink-0"
@@ -39,7 +38,6 @@ export function EventDetails() {
         </h1>
       </div>
 
-      {/* High-contrast duration badge */}
       <div className="flex items-center gap-2.5">
         <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-navy-900 text-xs font-semibold shadow-2xs">
           <Clock size={14} className="text-primary shrink-0" />
@@ -50,7 +48,6 @@ export function EventDetails() {
         </span>
       </div>
 
-      {/* Description with structured sections and subtle dividers */}
       <div>
         <div
           className={`text-sm space-y-4 overflow-hidden transition-all duration-200 ${
@@ -70,7 +67,6 @@ export function EventDetails() {
             </p>
           </div>
 
-          {/* Section: Who this is for */}
           <div className="border-t border-border pt-3.5 space-y-1.5">
             <div className="flex items-center gap-2 text-emerald-700 font-semibold text-xs uppercase tracking-wider">
               <CheckCircle2 size={14} className="text-emerald-600 shrink-0" />
@@ -81,7 +77,6 @@ export function EventDetails() {
             </p>
           </div>
 
-          {/* Section: Who this isn't for */}
           <div className="border-t border-border pt-3.5 space-y-1.5">
             <div className="flex items-center gap-2 text-rose-700 font-semibold text-xs uppercase tracking-wider">
               <XCircle size={14} className="text-rose-600 shrink-0" />
@@ -92,7 +87,6 @@ export function EventDetails() {
             </p>
           </div>
 
-          {/* Section: What we'll do */}
           <div className="border-t border-border pt-3.5 space-y-1.5">
             <div className="flex items-center gap-2 text-primary font-semibold text-xs uppercase tracking-wider">
               <ListChecks size={14} className="text-primary shrink-0" />
@@ -105,7 +99,6 @@ export function EventDetails() {
             </ul>
           </div>
 
-          {/* Section: Logistics */}
           <div className="border-t border-border pt-3.5 space-y-1.5">
             <div className="flex items-center gap-2 text-amber-700 font-semibold text-xs uppercase tracking-wider">
               <AlertCircle size={14} className="text-amber-600 shrink-0" />

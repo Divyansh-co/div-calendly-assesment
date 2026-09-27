@@ -1,4 +1,3 @@
-
 import { clsx } from "clsx";
 import { ChevronLeft } from "lucide-react";
 import type { TimeSlot } from "../../types/booking";
@@ -32,7 +31,6 @@ export function TimeSlotList({
 
   return (
     <div className="step-enter">
-      {/* Header */}
       <div className="flex items-start gap-3.5 mb-6 pb-4 border-b border-border/80">
         <button
           type="button"
@@ -60,7 +58,6 @@ export function TimeSlotList({
         </div>
       </div>
 
-      {/* Slots */}
       {slots.length === 0 ? (
         <div className="p-8 text-center bg-slate-50/70 rounded-2xl border border-dashed border-border">
           <p className="text-sm font-medium text-slate-600">

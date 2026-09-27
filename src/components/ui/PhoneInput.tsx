@@ -38,7 +38,6 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
               : "border-border hover:border-slate-300 focus-within:border-primary focus-within:shadow-[0_0_0_3px_rgba(37,99,235,0.12)]"
           )}
         >
-          {/* Locked prefix */}
           <span className="flex items-center gap-1.5 px-3.5 py-2.5 bg-slate-100/90 border-r border-border text-xs font-bold text-navy-800 select-none shrink-0 tracking-wide">
             <span role="img" aria-label="India flag">🇮🇳</span>
             <span>+91</span>

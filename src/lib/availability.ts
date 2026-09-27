@@ -1,16 +1,7 @@
-/**
- * Availability rules:
- *  - Bookable weekdays: Thursday (4) and Saturday (6)
- *  - Blocked specific dates: Sep 24 2026
- *  - Thursday slots: 14:00, 15:00  (window 2–4 PM, 1-hour duration)
- *  - Saturday slots: 11:00, 12:00  (window 11 AM–1 PM, 1-hour duration)
- */
-
 import type { TimeSlot } from "../types/booking";
 
-const BLOCKED_DATES: string[] = [
-  "2026-09-24", // explicitly excluded
-];
+// Sep 24 2026 is blocked off on the schedule
+const BLOCKED_DATES: string[] = ["2026-09-24"];
 
 const THURSDAY = 4;
 const SATURDAY = 6;
@@ -53,7 +44,6 @@ export function getSlotsForDate(date: Date): TimeSlot[] {
   return [];
 }
 
-/** Returns all bookable dates (Date objects) within a given month. */
 export function getBookableDatesInMonth(year: number, month: number, today: Date): Date[] {
   const result: Date[] = [];
   const daysInMonth = new Date(year, month + 1, 0).getDate();

@@ -11,8 +11,6 @@ interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
   ({ label, error, id, className, maxLength, ...rest }, ref) => {
-    // Fall back to the shared max-length map so limits are enforced at the DOM level
-    // even if the caller forgets to pass maxLength explicitly.
     const resolvedMax = maxLength ?? FIELD_MAX_LENGTHS[id];
 
     return (

@@ -1,4 +1,3 @@
-
 import { CalendarHeader } from "./CalendarHeader";
 import { CalendarGrid } from "./CalendarGrid";
 import { TimezoneSelector } from "./TimezoneSelector";
@@ -61,7 +60,6 @@ export function Calendar({
         />
       ) : (
         <div className="min-h-[340px] flex flex-col items-center justify-center p-8 sm:p-12 text-center my-3 bg-slate-50/50 rounded-2xl border border-dashed border-border/80">
-          {/* Simple minimal line-art calendar icon in slate-300 */}
           <div className="w-14 h-14 rounded-2xl bg-white border border-border shadow-xs flex items-center justify-center mb-5 text-slate-300">
             <svg
               className="w-7 h-7 text-slate-300"
@@ -86,7 +84,7 @@ export function Calendar({
             No available times in {formatMonthYear(currentMonth)}
           </h3>
           <p className="text-sm text-slate-500 max-w-xs mb-6 leading-relaxed">
-            All consultation slots for this month are fully booked or have passed. Check the upcoming schedule to reserve your spot.
+            No open dates this month. Check next month to find an available time.
           </p>
 
           <button

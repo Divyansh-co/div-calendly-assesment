@@ -1,4 +1,3 @@
-
 import { clsx } from "clsx";
 
 interface Option {
@@ -57,7 +56,6 @@ export function RadioGroup({
                 onBlur={onBlur}
                 className="sr-only"
               />
-              {/* Custom Radio Circle */}
               <span
                 className={clsx(
                   "w-4 h-4 rounded-full border flex items-center justify-center shrink-0 transition-all duration-150 ease-out",

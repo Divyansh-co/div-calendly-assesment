@@ -105,7 +105,6 @@ export function useBookingFlow() {
       ...s,
       step: 1,
       selectedSlot: null,
-      // Preserve the previously selected date's month or current month
       currentMonth: s.selectedDate
         ? new Date(s.selectedDate.getFullYear(), s.selectedDate.getMonth(), 1)
         : s.currentMonth,
@@ -123,9 +122,7 @@ export function useBookingFlow() {
   const reset = useCallback(() => {
     try {
       sessionStorage.removeItem(STORAGE_KEY);
-    } catch {
-      // Ignore storage errors
-    }
+    } catch {}
     const n = new Date();
     setState({
       step: 1,

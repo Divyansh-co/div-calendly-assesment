@@ -1,4 +1,3 @@
-
 import { EventDetails } from "./components/event/EventDetails";
 import { Calendar } from "./components/calendar/Calendar";
 import { TimeSlotList } from "./components/booking/TimeSlotList";
@@ -23,7 +22,6 @@ export default function App() {
 
   const { step, selectedDate, selectedSlot, currentMonth, timezone, formData } = state;
 
-  // Right panel content keyed by step so React re-mounts the step-enter animation.
   const renderRightPanel = () => {
     if (step === 4 && selectedDate && selectedSlot) {
       return (
@@ -67,7 +65,6 @@ export default function App() {
       );
     }
 
-    // Step 1 — calendar
     return (
       <div key="step-1" className="step-enter">
         <div className="mb-4">
@@ -103,12 +100,9 @@ export default function App() {
             style={{ borderTop: "3px solid #2563EB" }}
           >
             {isFullWidth ? (
-              // Confirmation: single column with generous padding
               <div className="p-8 sm:p-10 lg:p-12">{renderRightPanel()}</div>
             ) : (
-              // Steps 1–3: two-column on desktop with 32-40px padding
               <div className="flex flex-col lg:flex-row">
-                {/* Left: event details with subtle gradient anchor */}
                 <div
                   className="lg:w-[400px] lg:min-w-[400px] p-6 sm:p-8 lg:p-10 border-b lg:border-b-0 lg:border-r border-border"
                   style={{
@@ -118,7 +112,6 @@ export default function App() {
                   <EventDetails />
                 </div>
 
-                {/* Right: calendar / slots / form */}
                 <div className="flex-1 p-6 sm:p-8 lg:p-10 min-w-0 bg-surface">
                   {renderRightPanel()}
                 </div>

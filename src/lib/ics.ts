@@ -5,10 +5,8 @@ function pad(n: number) {
   return String(n).padStart(2, "0");
 }
 
-/** Formats a Date into an ICS datetime string in the given timezone offset. */
 function toICSLocal(date: Date, hour: number, minute: number): string {
-  // We create a local representation in IST (Asia/Kolkata, +05:30).
-  // The ICS will use TZID=Asia/Kolkata, so we write local wall-clock time.
+  // Asia/Kolkata is +05:30; ICS uses TZID=Asia/Kolkata with local wall-clock representation
   const y = date.getFullYear();
   const mo = pad(date.getMonth() + 1);
   const d = pad(date.getDate());

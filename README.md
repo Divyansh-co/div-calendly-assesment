@@ -6,11 +6,11 @@ The booking flow takes you through three steps: pick a date (Thursdays and Satur
 
 ## Stack
 
-- **React 18** with TypeScript
-- **Vite** for bundling and development
+- **React 19** with TypeScript
+- **Vite** for bundling and dev server
 - **Tailwind CSS v3** with `@tailwindcss/forms`
 - **lucide-react** for icons
-- **clsx** for conditional class merging
+- **clsx** for conditional classes
 
 No component library, no external state management, no analytics or tracking scripts.
 

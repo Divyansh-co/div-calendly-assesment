@@ -41,8 +41,6 @@ export function BookingForm({
   const [guestError, setGuestError] = useState<string | undefined>();
   const [submitting, setSubmitting] = useState(false);
   const [activeModal, setActiveModal] = useState<"terms" | "privacy" | null>(null);
-
-  // Honeypot field — must remain empty.
   const [honeypot, setHoneypot] = useState("");
 
   const setField = <K extends keyof BookingFormData>(
@@ -75,7 +73,6 @@ export function BookingForm({
     setField("guests", formData.guests.filter((g) => g !== email));
   };
 
-  // Check if all required fields are filled and valid
   const currentValidationErrors = validateAll(formData);
   const isFormValid =
     Boolean(formData.firstName.trim()) &&
@@ -90,10 +87,8 @@ export function BookingForm({
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
 
-    // Honeypot check — silent rejection
     if (honeypot) return;
 
-    // Re-validate everything on submit
     const allErrors = validateAll(formData);
     if (Object.keys(allErrors).length > 0) {
       setErrors(allErrors);
@@ -105,8 +100,7 @@ export function BookingForm({
     if (submitting) return;
 
     setSubmitting(true);
-    // Simulated async submission (~800ms)
-    await new Promise((r) => setTimeout(r, 800));
+    await new Promise((r) => setTimeout(r, 600));
     setSubmitting(false);
     onConfirm();
   };
@@ -137,7 +131,6 @@ export function BookingForm({
       <BookingSummary date={date} slot={slot} timezone={timezone} />
 
       <form onSubmit={handleSubmit} noValidate aria-live="polite">
-        {/* Honeypot field */}
         <div
           aria-hidden="true"
           style={{ position: "absolute", left: "-9999px", width: "1px", height: "1px", overflow: "hidden" }}
@@ -155,7 +148,6 @@ export function BookingForm({
         </div>
 
         <div className="space-y-6">
-          {/* Name row */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <TextInput
               id="firstName"
@@ -191,7 +183,6 @@ export function BookingForm({
             autoComplete="email"
           />
 
-          {/* Guest emails */}
           <div>
             {formData.guests.map((g) => (
               <div key={g} className="flex items-center gap-2 text-sm text-navy-800 bg-slate-50 border border-border px-3 py-1.5 rounded-lg mb-2">
@@ -326,7 +317,6 @@ export function BookingForm({
             .
           </p>
 
-          {/* Schedule Event button with disabled-until-valid behavior */}
           <div onClick={handleDisabledSubmitClick} className="w-full">
             <Button
               type="submit"
@@ -340,13 +330,12 @@ export function BookingForm({
           </div>
           {!isFormValid && (
             <p className="text-xs text-slate-400 text-center font-medium">
-              Please complete all required fields (*) to schedule your appointment
+              Fill in all required fields (*) to continue
             </p>
           )}
         </div>
       </form>
 
-      {/* Terms & Privacy Modals */}
       {activeModal && (
         <div
           role="dialog"
@@ -409,7 +398,7 @@ export function BookingForm({
                 onClick={() => setActiveModal(null)}
                 className="btn-primary px-5 py-2 min-h-0 text-xs font-semibold"
               >
-                I Understand
+                Close
               </button>
             </div>
           </div>
