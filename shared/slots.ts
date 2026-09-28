@@ -2,8 +2,7 @@ import { fromZonedTime, formatInTimeZone } from "date-fns-tz";
 import { AVAILABILITY_CONFIG } from "./availability.config.js";
 
 export function isBlockedDate(isoDate: string): boolean {
-  // Recurring September 24 check (to be replaced with exact 2026-09-24 check)
-  return isoDate.endsWith("-09-24");
+  return AVAILABILITY_CONFIG.blockedDates.includes(isoDate);
 }
 
 export function formatIsoDate(date: Date, timezone: string = AVAILABILITY_CONFIG.timezone): string {
