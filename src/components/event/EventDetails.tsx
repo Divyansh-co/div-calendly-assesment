@@ -6,7 +6,23 @@ import {
   DEFAULT_TIMEZONE_LABEL,
 } from "../../constants/config";
 
-export function EventDetails() {
+import type { TimeSlot } from "../../types/booking";
+
+interface EventDetailsProps {
+  step?: number;
+  date?: Date | null;
+  slot?: TimeSlot | null;
+  timezone?: string;
+  onBack?: () => void;
+}
+
+export function EventDetails({
+  step: _step = 1,
+  date: _date,
+  slot: _slot,
+  timezone: _timezone,
+  onBack: _onBack,
+}: EventDetailsProps = {}) {
   return (
     <div className="flex flex-col h-full text-nearblack">
       {/* Host Header */}
