@@ -1,4 +1,4 @@
-export type BookingStep = 1 | 2 | 3 | 4;
+export type BookingStep = 1 | 2 | 3;
 
 export interface TimeSlot {
   label: string;       // e.g. "2:00 PM"

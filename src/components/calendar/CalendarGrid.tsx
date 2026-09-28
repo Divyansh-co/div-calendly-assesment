@@ -1,8 +1,7 @@
 import { clsx } from "clsx";
 import { getCalendarWeeks } from "../../lib/date-utils";
 
-// Mon–Sun display order; SHORT_WEEKDAYS is Sun-indexed so we reorder.
-const MON_SUN = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const MON_SUN = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 
 interface CalendarGridProps {
   year: number;
@@ -32,24 +31,26 @@ export function CalendarGrid({
   const isSelected = (date: Date) => selectedDate !== null && isSameDay(date, selectedDate);
 
   return (
-    <div key={`${year}-${month}`} className="month-enter">
+    <div>
+      {/* Day headers */}
       <div className="grid grid-cols-7 mb-2">
         {MON_SUN.map((d) => (
           <div
             key={d}
-            className="text-center text-[11px] font-semibold text-slate-400 py-1 uppercase tracking-wider"
+            className="text-center text-[11px] font-semibold text-muted py-1 tracking-wider"
           >
             {d}
           </div>
         ))}
       </div>
 
+      {/* Days grid */}
       <div className="space-y-1">
         {weeks.map((week, wi) => (
           <div key={wi} className="grid grid-cols-7 gap-1">
             {week.map((date, di) => {
               if (!date) {
-                return <div key={di} className="w-9 h-9 sm:w-10 sm:h-10" />;
+                return <div key={di} className="w-10 h-10" />;
               }
 
               const bookable = isBookable(date);
@@ -57,7 +58,7 @@ export function CalendarGrid({
               const today_ = isToday(date);
 
               return (
-                <div key={di} className="flex items-center justify-center py-0.5">
+                <div key={di} className="flex items-center justify-center">
                   <button
                     type="button"
                     onClick={() => bookable && onSelect(date)}
@@ -65,19 +66,16 @@ export function CalendarGrid({
                     aria-label={`${date.getDate()} ${date.toLocaleString("en-IN", { month: "long" })} ${date.getFullYear()}${bookable ? " (Available)" : " (Unavailable)"}`}
                     aria-pressed={selected}
                     className={clsx(
-                      "relative w-9 h-9 sm:w-10 sm:h-10 rounded-full text-sm flex items-center justify-center transition-all duration-150 ease-out select-none",
+                      "relative w-10 h-10 rounded-full text-sm flex items-center justify-center transition-all duration-150 ease-out select-none",
                       selected
-                        ? "bg-primary text-white font-bold scale-105 shadow-sm ring-2 ring-primary/30"
+                        ? "bg-primary text-white font-bold shadow-sm"
                         : bookable
-                        ? "text-navy-900 font-semibold hover:bg-primary-tint hover:text-primary hover:font-bold active:scale-95 cursor-pointer relative"
-                        : "text-slate-400 opacity-35 cursor-not-allowed pointer-events-none font-normal",
-                      today_ && !selected && "ring-1.5 ring-primary/40 font-semibold"
+                        ? "text-primary bg-[#F4F1F8] font-bold hover:bg-primary hover:text-white cursor-pointer"
+                        : "text-muted font-normal cursor-not-allowed opacity-50",
+                      today_ && !selected && !bookable && "font-medium"
                     )}
                   >
                     <span>{date.getDate()}</span>
-                    {bookable && !selected && (
-                      <span className="w-1 h-1 rounded-full bg-primary absolute bottom-1 left-1/2 -translate-x-1/2" />
-                    )}
                   </button>
                 </div>
               );

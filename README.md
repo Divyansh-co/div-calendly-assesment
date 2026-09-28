@@ -1,48 +1,55 @@
-# Booking — Divyansh Mishra
+# Harsh Gupta – Wealth Multiplication via Agri Land Investments
 
-A personal appointment booking page for a 60-minute consultation on wealth multiplication through agricultural land investments. Built as a standalone client-side SPA — no backend, no database, no tracking.
+A fully functional, self-hosted meeting booking application that is a near-exact visual and functional replica of the original Calendly page for **“Harsh Gupta – wealth multiplication via agri land investments”**.
 
-The booking flow takes you through three steps: pick a date (Thursdays and Saturdays only), choose a time slot, and fill in a short form. On completion you get a confirmation screen with a downloadable `.ics` calendar file.
+Built with React + TypeScript + Vite + Tailwind CSS.
 
-## Stack
+## Design & Color Palette
+- **Primary / Accent**: Royal Iris (`#5B4B8A`)
+- **Background / Secondary**: Butter Yellow (`#F5E6C8`)
+- **Cards & Panels**: Pure White (`#FFFFFF`) with light butter-yellow borders (`#EDE0C4`)
+- **Text**: Near-black (`#1A1A1A`)
+- **Available / Selected Dates & Buttons**: Royal Iris (`#5B4B8A`)
+- **Disabled / Past Dates**: Muted gray (`#9CA3AF`)
+- **Layout**: Classic two-column Calendly layout with host details on the left, calendar & booking on the right, and the "POWERED BY" corner ribbon in the top-right.
 
-- **React 19** with TypeScript
-- **Vite** for bundling and dev server
-- **Tailwind CSS v3** with `@tailwindcss/forms`
-- **lucide-react** for icons
-- **clsx** for conditional classes
+## Availability Rules
+- **Meeting Duration**: 60 minutes
+- **Recurring Windows (IST)**:
+  - Thursdays → 14:00 – 16:00 (`2:00 PM` and `3:00 PM`)
+  - Saturdays → 11:00 – 13:00 (`11:00 AM` and `12:00 PM`)
+- **Blocked Dates**: September 24 of any year is completely blocked (never selectable)
+- **Dynamic Slots**: Calendar highlights only days with open slots; selecting a date shows only valid 1-hour slots.
 
-No component library, no external state management, no analytics or tracking scripts.
+## Booking Form Fields
+After choosing a time slot, the form captures:
+1. **First name \*** (Text)
+2. **Last name \*** (Text)
+3. **Email \*** (Email)
+4. **Add guests** (Optional multi-email tag field)
+5. **Which city are you based in? \*** (Text)
+6. **Where is your hometown? \*** (Radio buttons: Delhi/NCR, Uttar Pradesh/Haryana, Punjab)
+7. **How much income do you make? \*** (Dropdown with "Select…" placeholder + realistic income ranges)
+8. **How much land you want to buy?** (Checkboxes: 1000 sqm, 1000-2000 sqm, 2000 sqm+)
+9. **What is your whatsapp number? \*** (Phone with +91 prefix)
 
-## Running locally
+Bookings are persisted locally in `localStorage` and a confirmation screen is displayed with an `.ics` calendar invite download.
+
+## Running Locally
 
 ```bash
+# 1. Install dependencies
 npm install
+
+# 2. Start local development server
 npm run dev
 ```
 
-The dev server starts at `http://localhost:5173`.
+Open `http://localhost:5173` to view the booking application.
 
-## Folder layout
+## Production Build
 
+```bash
+npm run build
+npm run preview
 ```
-src/
-├── components/
-│   ├── booking/     # TimeSlotList, BookingForm, BookingSummary, ConfirmationScreen
-│   ├── calendar/    # Calendar, CalendarHeader, CalendarGrid, TimezoneSelector
-│   ├── event/       # EventDetails (left-panel description)
-│   ├── layout/      # Footer
-│   └── ui/          # Button, TextInput, RadioGroup, CheckboxGroup, Select, PhoneInput
-├── constants/       # config.ts — host name, event title, timezone/form options
-├── hooks/           # useBookingFlow (step state), useAvailability
-├── lib/             # availability.ts, validation.ts, ics.ts, date-utils.ts
-└── types/           # booking.ts
-```
-
-## Availability rules
-
-Only Thursdays and Saturdays are bookable. Thursday slots: 2:00 PM and 3:00 PM IST. Saturday slots: 11:00 AM and 12:00 PM IST. September 24, 2026 is hard-blocked regardless of day of week. All slot logic is computed — nothing is a hardcoded string list.
-
-## Security
-
-See [SECURITY.md](./SECURITY.md) for notes on the current hardening applied and the additional server-side controls required before production use with real user data.

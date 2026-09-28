@@ -46,58 +46,57 @@ export function ConfirmationScreen({
 
   return (
     <div
-      className="step-enter text-center space-y-6 py-2"
+      className="text-center space-y-6 py-4 text-nearblack"
       role="region"
-      aria-live="polite"
       aria-label="Booking confirmation"
     >
       <div className="flex justify-center">
-        <div className="success-bounce w-16 h-16 rounded-full bg-success/10 flex items-center justify-center ring-8 ring-success/5 shadow-xs">
-          <CheckCircle className="text-success" size={36} strokeWidth={2} />
+        <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center text-primary">
+          <CheckCircle className="text-primary" size={32} />
         </div>
       </div>
 
       <div>
-        <h2 className="text-2xl font-bold text-navy-900 mb-1 tracking-tight">You're booked!</h2>
-        <p className="text-sm text-slate-500">
+        <h2 className="text-2xl font-bold text-nearblack mb-1.5">You're booked!</h2>
+        <p className="text-sm text-[#4A4A4A]">
           Your session with{" "}
-          <span className="font-semibold text-navy-800">{HOST_NAME}</span> has been
+          <span className="font-semibold text-nearblack">{HOST_NAME}</span> has been
           scheduled.
         </p>
       </div>
 
-      <div className="card p-5 text-left space-y-4 text-sm bg-slate-50/50 border border-border/80">
+      <div className="p-5 text-left space-y-3.5 text-sm bg-butter-light/50 border border-butter-border rounded-xl">
         <div>
-          <p className="text-xs uppercase font-semibold tracking-wider text-slate-400 mb-0.5">Event</p>
-          <p className="font-bold text-navy-900 text-base">{EVENT_TITLE}</p>
+          <p className="text-xs uppercase font-semibold text-muted mb-0.5">Event</p>
+          <p className="font-bold text-nearblack text-base">{EVENT_TITLE}</p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 pt-2 border-t border-border/70">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-2.5 border-t border-butter-border">
           <div>
-            <p className="text-xs uppercase font-semibold tracking-wider text-slate-400 mb-0.5">Attendee</p>
-            <p className="text-navy-900 font-semibold">{displayName}</p>
+            <p className="text-xs uppercase font-semibold text-muted mb-0.5">Attendee</p>
+            <p className="text-nearblack font-semibold">{displayName}</p>
           </div>
           <div>
-            <p className="text-xs uppercase font-semibold tracking-wider text-slate-400 mb-0.5">Confirmation sent to</p>
-            <p className="text-navy-900 font-medium break-all">{email}</p>
+            <p className="text-xs uppercase font-semibold text-muted mb-0.5">Confirmation email sent to</p>
+            <p className="text-nearblack font-medium break-all">{email}</p>
           </div>
           <div>
-            <p className="text-xs uppercase font-semibold tracking-wider text-slate-400 mb-0.5">Date</p>
-            <p className="text-navy-900 font-semibold">{formatLongDate(date)}</p>
+            <p className="text-xs uppercase font-semibold text-muted mb-0.5">Date</p>
+            <p className="text-nearblack font-semibold">{formatLongDate(date)}</p>
           </div>
           <div>
-            <p className="text-xs uppercase font-semibold tracking-wider text-slate-400 mb-0.5">Time</p>
-            <p className="text-navy-900 font-semibold">
+            <p className="text-xs uppercase font-semibold text-muted mb-0.5">Time</p>
+            <p className="text-nearblack font-semibold">
               {slotLabel} – {endLabel}
             </p>
           </div>
           <div>
-            <p className="text-xs uppercase font-semibold tracking-wider text-slate-400 mb-0.5">Duration</p>
-            <p className="text-navy-900 font-medium">{MEETING_DURATION_LABEL}</p>
+            <p className="text-xs uppercase font-semibold text-muted mb-0.5">Duration</p>
+            <p className="text-nearblack font-medium">{MEETING_DURATION_LABEL}</p>
           </div>
           <div>
-            <p className="text-xs uppercase font-semibold tracking-wider text-slate-400 mb-0.5">Timezone</p>
-            <p className="text-navy-900 font-medium">{tzLabel}</p>
+            <p className="text-xs uppercase font-semibold text-muted mb-0.5">Timezone</p>
+            <p className="text-nearblack font-medium">{tzLabel}</p>
           </div>
         </div>
       </div>
@@ -107,7 +106,6 @@ export function ConfirmationScreen({
           variant="primary"
           fullWidth
           onClick={() => downloadICS(date, slot, email, displayName)}
-          className="shadow-sm"
         >
           <CalendarPlus size={18} />
           Add to Calendar (.ics)

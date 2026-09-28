@@ -2,13 +2,19 @@ import { CalendarHeader } from "./CalendarHeader";
 import { CalendarGrid } from "./CalendarGrid";
 import { TimezoneSelector } from "./TimezoneSelector";
 import { useAvailability } from "../../hooks/useAvailability";
-import { formatMonthYear } from "../../lib/date-utils";
+import { formatMonthYear, formatLongDate, convertSlotTime } from "../../lib/date-utils";
+import { getSlotsForDate } from "../../lib/availability";
+import type { TimeSlot } from "../../types/booking";
+import { clsx } from "clsx";
 
 interface CalendarProps {
   currentMonth: Date;
   selectedDate: Date | null;
+  selectedSlot: TimeSlot | null;
   timezone: string;
   onDateSelect: (date: Date) => void;
+  onSlotSelect: (slot: TimeSlot) => void;
+  onConfirmSlot: () => void;
   onMonthChange: (month: Date) => void;
   onTimezoneChange: (tz: string) => void;
 }
@@ -16,8 +22,11 @@ interface CalendarProps {
 export function Calendar({
   currentMonth,
   selectedDate,
+  selectedSlot,
   timezone,
   onDateSelect,
+  onSlotSelect,
+  onConfirmSlot,
   onMonthChange,
   onTimezoneChange,
 }: CalendarProps) {
@@ -36,69 +45,115 @@ export function Calendar({
     onMonthChange(d);
   };
 
-  // Disable going back to a month already in the past
   const todayFirst = new Date(today.getFullYear(), today.getMonth(), 1);
   const canGoPrev = currentMonth > todayFirst;
 
+  const activeSlots = selectedDate ? getSlotsForDate(selectedDate) : [];
+
+  const formatSlotTime = (slot: TimeSlot) => {
+    if (!selectedDate) return slot.label;
+    if (timezone === "Asia/Kolkata") return slot.label;
+    return convertSlotTime(selectedDate, slot.hour, slot.minute, timezone);
+  };
+
   return (
-    <div>
-      <CalendarHeader
-        currentMonth={currentMonth}
-        onPrev={goPrev}
-        onNext={goNext}
-        canGoPrev={canGoPrev}
-      />
+    <div className="text-nearblack">
+      <div className="mb-4">
+        <h2 className="text-lg font-bold text-nearblack">
+          Select a Date & Time
+        </h2>
+      </div>
 
-      {hasBookableDates ? (
-        <CalendarGrid
-          year={year}
-          month={month}
-          selectedDate={selectedDate}
-          today={today}
-          isBookable={checkDate}
-          onSelect={onDateSelect}
-        />
-      ) : (
-        <div className="min-h-[340px] flex flex-col items-center justify-center p-8 sm:p-12 text-center my-3 bg-slate-50/50 rounded-2xl border border-dashed border-border/80">
-          <div className="w-14 h-14 rounded-2xl bg-white border border-border shadow-xs flex items-center justify-center mb-5 text-slate-300">
-            <svg
-              className="w-7 h-7 text-slate-300"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <rect x="3" y="4" width="18" height="18" rx="3" ry="3" />
-              <line x1="16" y1="2" x2="16" y2="6" />
-              <line x1="8" y1="2" x2="8" y2="6" />
-              <line x1="3" y1="10" x2="21" y2="10" />
-              <line x1="8" y1="14" x2="8.01" y2="14" strokeWidth="2.5" />
-              <line x1="12" y1="14" x2="12.01" y2="14" strokeWidth="2.5" />
-              <line x1="16" y1="14" x2="16.01" y2="14" strokeWidth="2.5" />
-            </svg>
-          </div>
+      <div
+        className={clsx(
+          "transition-all duration-200",
+          selectedDate ? "flex flex-col md:flex-row gap-6 md:gap-8 items-start" : ""
+        )}
+      >
+        {/* Calendar Left Column */}
+        <div className={selectedDate ? "w-full md:w-[320px] shrink-0" : "w-full max-w-[340px]"}>
+          <CalendarHeader
+            currentMonth={currentMonth}
+            onPrev={goPrev}
+            onNext={goNext}
+            canGoPrev={canGoPrev}
+          />
 
-          <h3 className="text-base font-bold text-navy-900 mb-1.5 tracking-tight">
-            No available times in {formatMonthYear(currentMonth)}
-          </h3>
-          <p className="text-sm text-slate-500 max-w-xs mb-6 leading-relaxed">
-            No open dates this month. Check next month to find an available time.
-          </p>
+          {hasBookableDates ? (
+            <CalendarGrid
+              year={year}
+              month={month}
+              selectedDate={selectedDate}
+              today={today}
+              isBookable={checkDate}
+              onSelect={onDateSelect}
+            />
+          ) : (
+            <div className="py-8 text-center text-sm text-muted">
+              <p className="mb-3">No available dates in {formatMonthYear(currentMonth)}.</p>
+              <button
+                type="button"
+                onClick={goNext}
+                className="text-primary font-semibold hover:underline cursor-pointer text-xs"
+              >
+                View next month →
+              </button>
+            </div>
+          )}
 
-          <button
-            type="button"
-            onClick={goNext}
-            className="group inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-white text-sm font-semibold hover:bg-primary-hover shadow-xs hover:shadow-md transition-all duration-150 active:scale-[0.98]"
-          >
-            <span>View next month</span>
-            <span className="inline-block transition-transform duration-150 ease-out group-hover:translate-x-1" aria-hidden="true">→</span>
-          </button>
+          <TimezoneSelector value={timezone} onChange={onTimezoneChange} />
         </div>
-      )}
 
-      <TimezoneSelector value={timezone} onChange={onTimezoneChange} />
+        {/* Time Slots Right Column (shown when a date is selected) */}
+        {selectedDate && (
+          <div className="w-full md:w-[240px] pt-4 md:pt-0 border-t md:border-t-0 md:border-l md:border-border md:pl-6">
+            <p className="text-sm font-semibold text-nearblack mb-4">
+              {formatLongDate(selectedDate)}
+            </p>
+
+            {activeSlots.length === 0 ? (
+              <p className="text-xs text-muted">No open slots for this date.</p>
+            ) : (
+              <div className="space-y-2.5 max-h-[360px] overflow-y-auto pr-1 custom-scrollbar">
+                {activeSlots.map((slot) => {
+                  const isSelected =
+                    selectedSlot?.hour === slot.hour && selectedSlot?.minute === slot.minute;
+
+                  return (
+                    <div key={slot.label} className="w-full">
+                      {isSelected ? (
+                        <div className="flex gap-2 w-full animate-in fade-in duration-150">
+                          <button
+                            type="button"
+                            className="flex-1 py-3 px-3 rounded-lg bg-[#3E325E] text-white text-xs font-bold text-center cursor-default shadow-xs"
+                          >
+                            {formatSlotTime(slot)}
+                          </button>
+                          <button
+                            type="button"
+                            onClick={onConfirmSlot}
+                            className="flex-1 py-3 px-3 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs font-bold text-center transition-colors cursor-pointer shadow-xs"
+                          >
+                            Next
+                          </button>
+                        </div>
+                      ) : (
+                        <button
+                          type="button"
+                          onClick={() => onSlotSelect(slot)}
+                          className="w-full py-3 px-4 rounded-lg border border-primary text-primary font-semibold text-xs tracking-wide bg-white hover:bg-primary hover:text-white transition-all duration-150 cursor-pointer text-center"
+                        >
+                          {formatSlotTime(slot)}
+                        </button>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
     </div>
   );
 }

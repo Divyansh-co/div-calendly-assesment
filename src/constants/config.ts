@@ -1,14 +1,14 @@
-export const HOST_NAME = "Divyansh Mishra";
-export const EVENT_TITLE = "Wealth Multiplication via Agri Land Investments";
-export const MEETING_DURATION_LABEL = "60 min";
+export const HOST_NAME = "Harsh Gupta";
+export const EVENT_TITLE = "wealth multiplication via agri land investments";
+export const MEETING_DURATION_LABEL = "1 hour";
 export const MEETING_DURATION_MINUTES = 60;
 
-// All slot times are defined in IST; this is the default shown to users.
+// All slot times are defined in IST (Asia/Kolkata)
 export const DEFAULT_TIMEZONE = "Asia/Kolkata";
-export const DEFAULT_TIMEZONE_LABEL = "India Standard Time (IST)";
+export const DEFAULT_TIMEZONE_LABEL = "India Standard Time";
 
 export const SUPPORTED_TIMEZONES: { value: string; label: string }[] = [
-  { value: "Asia/Kolkata",        label: "India Standard Time (IST)" },
+  { value: "Asia/Kolkata",        label: "India Standard Time" },
   { value: "Asia/Dubai",          label: "Gulf Standard Time (GST)" },
   { value: "Europe/London",       label: "British Time (GMT/BST)" },
   { value: "America/New_York",    label: "Eastern Time (ET)" },
@@ -24,17 +24,17 @@ export const HOMETOWN_OPTIONS = [
 ] as const;
 
 export const INCOME_OPTIONS = [
-  { value: "",           label: "Select income range" },
-  { value: "below-5l",  label: "Below ₹5 lakh" },
-  { value: "5l-10l",    label: "₹5–10 lakh" },
-  { value: "10l-20l",   label: "₹10–20 lakh" },
-  { value: "20l-50l",   label: "₹20–50 lakh" },
-  { value: "50l-plus",  label: "₹50 lakh+" },
+  { value: "",                  label: "Select…" },
+  { value: "15l-25l",          label: "₹15 Lakhs – ₹25 Lakhs" },
+  { value: "25l-50l",          label: "₹25 Lakhs – ₹50 Lakhs" },
+  { value: "50l-75l",          label: "₹50 Lakhs – ₹75 Lakhs" },
+  { value: "75l-1cr",          label: "₹75 Lakhs – ₹1 Crore" },
+  { value: "1cr-plus",         label: "₹1 Crore+" },
 ];
 
-// optional — user picks how much land they're interested in
 export const LAND_SIZE_OPTIONS = [
-  { value: "1000sqm",      label: "1000 sqm" },
-  { value: "1000-2000sqm", label: "1000–2000 sqm" },
-  { value: "2000sqm-plus", label: "2000 sqm+" },
+  { value: "1000 sqm",         label: "1000 sqm" },
+  { value: "1000-2000 sqm",    label: "1000-2000 sqm" },
+  { value: "2000 sqm+",        label: "2000 sqm+" },
 ];
+

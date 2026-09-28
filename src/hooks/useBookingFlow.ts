@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
-import type { BookingState, BookingStep, TimeSlot, BookingFormData } from "../types/booking";
-import { DEFAULT_TIMEZONE } from "../constants/config";
+import type { BookingState, TimeSlot, BookingFormData } from "../types/booking";
+import { DEFAULT_TIMEZONE, HOST_NAME, EVENT_TITLE } from "../constants/config";
 
 const INITIAL_FORM: BookingFormData = {
   firstName: "",
@@ -14,7 +14,8 @@ const INITIAL_FORM: BookingFormData = {
   whatsapp: "",
 };
 
-const STORAGE_KEY = "dm_booking_flow_state";
+const STORAGE_KEY = "calendly_replica_flow_state";
+const BOOKINGS_STORAGE_KEY = "booked_meetings";
 
 export function useBookingFlow() {
   const [state, setState] = useState<BookingState>(() => {
@@ -47,7 +48,6 @@ export function useBookingFlow() {
     }
   });
 
-  // Sync state to sessionStorage for safe refresh resilience
   const updateAndPersist = useCallback((updater: (prev: BookingState) => BookingState) => {
     setState((prev) => {
       const next = updater(prev);
@@ -64,28 +64,34 @@ export function useBookingFlow() {
           })
         );
       } catch {
-        // Ignore storage write errors (e.g. incognito quota)
+        // Ignore session storage errors
       }
       return next;
     });
   }, []);
-
-  const goToStep = useCallback((step: BookingStep) => {
-    updateAndPersist((s) => ({ ...s, step }));
-  }, [updateAndPersist]);
 
   const selectDate = useCallback((date: Date) => {
     updateAndPersist((s) => ({
       ...s,
       selectedDate: date,
       selectedSlot: null,
-      step: 2,
       currentMonth: new Date(date.getFullYear(), date.getMonth(), 1),
     }));
   }, [updateAndPersist]);
 
   const selectSlot = useCallback((slot: TimeSlot) => {
-    updateAndPersist((s) => ({ ...s, selectedSlot: slot, step: 3 }));
+    updateAndPersist((s) => ({
+      ...s,
+      selectedSlot: slot,
+    }));
+  }, [updateAndPersist]);
+
+  const proceedToForm = useCallback(() => {
+    updateAndPersist((s) => ({ ...s, step: 2 }));
+  }, [updateAndPersist]);
+
+  const backToDateTime = useCallback(() => {
+    updateAndPersist((s) => ({ ...s, step: 1 }));
   }, [updateAndPersist]);
 
   const setMonth = useCallback((month: Date) => {
@@ -100,24 +106,55 @@ export function useBookingFlow() {
     updateAndPersist((s) => ({ ...s, formData: { ...s.formData, ...updates } }));
   }, [updateAndPersist]);
 
-  const backToStep1 = useCallback(() => {
-    updateAndPersist((s) => ({
-      ...s,
-      step: 1,
-      selectedSlot: null,
-      currentMonth: s.selectedDate
-        ? new Date(s.selectedDate.getFullYear(), s.selectedDate.getMonth(), 1)
-        : s.currentMonth,
-    }));
-  }, [updateAndPersist]);
-
-  const backToStep2 = useCallback(() => {
-    updateAndPersist((s) => ({ ...s, step: 2 }));
-  }, [updateAndPersist]);
-
   const confirmBooking = useCallback(() => {
-    updateAndPersist((s) => ({ ...s, step: 4 }));
-  }, [updateAndPersist]);
+    setState((currentState) => {
+      // Store booking locally in localStorage
+      if (currentState.selectedDate && currentState.selectedSlot) {
+        try {
+          const newBooking = {
+            id: `booking_${Date.now()}`,
+            createdAt: new Date().toISOString(),
+            host: HOST_NAME,
+            eventTitle: EVENT_TITLE,
+            date: currentState.selectedDate.toISOString(),
+            slot: currentState.selectedSlot,
+            timezone: currentState.timezone,
+            attendee: {
+              firstName: currentState.formData.firstName,
+              lastName: currentState.formData.lastName,
+              email: currentState.formData.email,
+              guests: currentState.formData.guests,
+              city: currentState.formData.city,
+              hometown: currentState.formData.hometown,
+              income: currentState.formData.income,
+              landSize: currentState.formData.landSize,
+              whatsapp: currentState.formData.whatsapp,
+            },
+          };
+          const existing = JSON.parse(localStorage.getItem(BOOKINGS_STORAGE_KEY) || "[]");
+          localStorage.setItem(BOOKINGS_STORAGE_KEY, JSON.stringify([...existing, newBooking]));
+        } catch (e) {
+          console.error("Failed to save booking to localStorage", e);
+        }
+      }
+
+      const nextState: BookingState = { ...currentState, step: 3 as any };
+      try {
+        sessionStorage.setItem(
+          STORAGE_KEY,
+          JSON.stringify({
+            step: nextState.step,
+            selectedDate: nextState.selectedDate ? nextState.selectedDate.toISOString() : null,
+            selectedSlot: nextState.selectedSlot,
+            currentMonth: nextState.currentMonth.toISOString(),
+            timezone: nextState.timezone,
+            formData: nextState.formData,
+          })
+        );
+      } catch {}
+      return nextState;
+    });
+  }, []);
 
   const reset = useCallback(() => {
     try {
@@ -136,14 +173,13 @@ export function useBookingFlow() {
 
   return {
     state,
-    goToStep,
     selectDate,
     selectSlot,
+    proceedToForm,
+    backToDateTime,
     setMonth,
     setTimezone,
     updateFormData,
-    backToStep1,
-    backToStep2,
     confirmBooking,
     reset,
   };
