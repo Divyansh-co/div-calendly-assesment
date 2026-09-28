@@ -1,4 +1,4 @@
-export const HOST_NAME = "Harsh Gupta";
+export const HOST_NAME = "Divyansh Mishra";
 export const EVENT_TITLE = "wealth multiplication via agri land investments";
 export const MEETING_DURATION_LABEL = "1 hour";
 export const MEETING_DURATION_MINUTES = 60;

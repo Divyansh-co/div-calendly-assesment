@@ -1,6 +1,6 @@
-# Harsh Gupta – Wealth Multiplication via Agri Land Investments
+# Divyansh Mishra – Wealth Multiplication via Agri Land Investments
 
-A fully functional, self-hosted meeting booking application that is a near-exact visual and functional replica of the original Calendly page for **“Harsh Gupta – wealth multiplication via agri land investments”**.
+A fully functional, self-hosted meeting booking application that is a near-exact visual and functional replica of the original Calendly page for **“Divyansh Mishra – wealth multiplication via agri land investments”**.
 
 Built with React + TypeScript + Vite + Tailwind CSS.
 

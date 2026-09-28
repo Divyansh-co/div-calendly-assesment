@@ -13,7 +13,7 @@ export function EventDetails() {
       <div className="mb-4">
         <div className="flex items-center gap-3 mb-3">
           <div className="w-11 h-11 rounded-full bg-primary text-white flex items-center justify-center font-bold text-sm tracking-wide shrink-0">
-            HG
+            DM
           </div>
           <div>
             <span className="text-xs text-muted font-medium block">

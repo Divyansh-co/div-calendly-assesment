@@ -14,7 +14,7 @@ function toICSLocal(date: Date, hour: number, minute: number): string {
 }
 
 function generateUID(): string {
-  return `${Date.now()}-${Math.random().toString(36).slice(2)}@harshgupta.booking`;
+  return `${Date.now()}-${Math.random().toString(36).slice(2)}@divyanshmishra.booking`;
 }
 
 export function generateICS(
@@ -38,7 +38,7 @@ export function generateICS(
   return [
     "BEGIN:VCALENDAR",
     "VERSION:2.0",
-    "PRODID:-//Harsh Gupta Booking//EN",
+    "PRODID:-//Divyansh Mishra Booking//EN",
     "CALSCALE:GREGORIAN",
     "METHOD:REQUEST",
     "BEGIN:VTIMEZONE",
@@ -56,7 +56,7 @@ export function generateICS(
     `DTSTART;TZID=Asia/Kolkata:${startStr}`,
     `DTEND;TZID=Asia/Kolkata:${endStr}`,
     `SUMMARY:${EVENT_TITLE}`,
-    `ORGANIZER;CN=${HOST_NAME}:mailto:noreply@harshgupta.booking`,
+    `ORGANIZER;CN=${HOST_NAME}:mailto:noreply@divyanshmishra.booking`,
     `ATTENDEE;CN=${safeAttendeeName}:mailto:${attendeeEmail}`,
     `DESCRIPTION:A personal consultation call with ${HOST_NAME}.\\nPlease join on time from a quiet place.`,
     "STATUS:CONFIRMED",
