@@ -91,7 +91,7 @@ export function Calendar({
             canGoPrev={canGoPrev}
           />
 
-          {hasBookableDates ? (
+          <div className="relative">
             <CalendarGrid
               year={year}
               month={month}
@@ -100,18 +100,25 @@ export function Calendar({
               isBookable={checkDate}
               onSelect={onDateSelect}
             />
-          ) : (
-            <div className="py-8 text-center text-sm text-muted">
-              <p className="mb-3">No available dates in {formatMonthYear(currentMonth)}.</p>
-              <button
-                type="button"
-                onClick={goNext}
-                className="text-primary font-semibold hover:underline cursor-pointer text-xs"
-              >
-                View next month →
-              </button>
-            </div>
-          )}
+
+            {!hasBookableDates && (
+              <div className="absolute inset-0 flex items-center justify-center bg-white/50 backdrop-blur-[1px] rounded-xl z-10 pointer-events-none">
+                <div className="bg-white border border-butter-border shadow-md rounded-xl p-4 text-center pointer-events-auto max-w-[220px]">
+                  <p className="text-xs font-semibold text-nearblack mb-1.5">
+                    No times in {formatMonthYear(currentMonth).split(" ")[0]}
+                  </p>
+                  <button
+                    type="button"
+                    onClick={goNext}
+                    className="text-xs font-medium text-primary hover:underline cursor-pointer inline-flex items-center gap-1"
+                  >
+                    <span>View next month</span>
+                    <span aria-hidden="true">›</span>
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
 
           <TimezoneSelector value={timezone} onChange={onTimezoneChange} />
         </div>

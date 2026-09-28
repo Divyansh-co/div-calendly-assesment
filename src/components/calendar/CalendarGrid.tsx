@@ -59,24 +59,33 @@ export function CalendarGrid({
 
               return (
                 <div key={di} className="flex items-center justify-center">
-                  <button
-                    type="button"
-                    onClick={() => bookable && onSelect(date)}
-                    disabled={!bookable}
-                    aria-label={`${date.getDate()} ${date.toLocaleString("en-IN", { month: "long" })} ${date.getFullYear()}${bookable ? " (Available)" : " (Unavailable)"}`}
-                    aria-pressed={selected}
-                    className={clsx(
-                      "relative w-10 h-10 rounded-full text-sm flex items-center justify-center transition-all duration-150 ease-out select-none",
-                      selected
-                        ? "bg-primary text-white font-bold shadow-sm"
-                        : bookable
-                        ? "text-primary bg-[#F4F1F8] font-bold hover:bg-primary hover:text-white cursor-pointer"
-                        : "text-muted font-normal cursor-not-allowed opacity-50",
-                      today_ && !selected && !bookable && "font-medium"
-                    )}
-                  >
-                    <span>{date.getDate()}</span>
-                  </button>
+                    <button
+                      type="button"
+                      onClick={() => bookable && onSelect(date)}
+                      disabled={!bookable}
+                      tabIndex={bookable ? 0 : -1}
+                      aria-label={`${date.getDate()} ${date.toLocaleString("en-IN", { month: "long" })} ${date.getFullYear()}${bookable ? " (Available)" : " (Unavailable)"}`}
+                      aria-pressed={selected}
+                      className={clsx(
+                        "relative w-10 h-10 rounded-full text-sm flex items-center justify-center transition-all duration-150 ease-out select-none",
+                        selected
+                          ? "bg-primary text-white font-bold shadow-xs"
+                          : bookable
+                          ? "text-primary bg-primary-tint/70 font-bold hover:bg-primary hover:text-white cursor-pointer"
+                          : "text-muted/60 font-normal cursor-default"
+                      )}
+                    >
+                      <span>{date.getDate()}</span>
+                      {today_ && (
+                        <span
+                          className={clsx(
+                            "absolute bottom-1 w-1 h-1 rounded-full",
+                            selected ? "bg-white" : "bg-primary"
+                          )}
+                          aria-hidden="true"
+                        />
+                      )}
+                    </button>
                 </div>
               );
             })}

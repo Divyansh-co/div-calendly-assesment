@@ -26,7 +26,7 @@ export function CalendarHeader({
           onClick={onPrev}
           disabled={!canGoPrev}
           aria-label="Previous month"
-          className="p-1.5 rounded-full text-nearblack hover:bg-primary-tint hover:text-primary disabled:text-muted disabled:hover:bg-transparent disabled:hover:text-muted disabled:cursor-not-allowed transition-colors"
+          className="p-1.5 rounded-full text-primary hover:bg-primary-tint disabled:text-muted disabled:hover:bg-transparent disabled:cursor-not-allowed transition-colors cursor-pointer"
           title={canGoPrev ? "Previous month" : "Past months not available"}
         >
           <ChevronLeft size={18} />
@@ -35,7 +35,7 @@ export function CalendarHeader({
           type="button"
           onClick={onNext}
           aria-label="Next month"
-          className="p-1.5 rounded-full text-nearblack hover:bg-primary-tint hover:text-primary transition-colors"
+          className="p-1.5 rounded-full text-primary hover:bg-primary-tint transition-colors cursor-pointer"
           title="Next month"
         >
           <ChevronRight size={18} />
