@@ -73,7 +73,10 @@ export function BookingForm({
     if (Object.keys(allErrors).length > 0) {
       setErrors(allErrors);
       const firstKey = Object.keys(allErrors)[0];
-      document.getElementById(firstKey)?.focus();
+      const targetElement =
+        document.getElementById(firstKey) ||
+        (document.querySelector(`[name="${firstKey}"]`) as HTMLElement | null);
+      targetElement?.focus();
       return;
     }
 
@@ -85,11 +88,42 @@ export function BookingForm({
     onConfirm();
   };
 
+  const errorEntries = Object.entries(errors).filter(([_, msg]) => !!msg);
+
   return (
     <div className="text-nearblack">
       <h2 className="text-lg font-bold text-nearblack mb-5">
         Enter Details
       </h2>
+
+      {/* Live-region error summary */}
+      {errorEntries.length > 0 && (
+        <div
+          role="alert"
+          aria-live="assertive"
+          className="mb-4 p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 space-y-1"
+        >
+          <p className="font-semibold">Please fix the following errors:</p>
+          <ul className="list-disc pl-4 space-y-0.5">
+            {errorEntries.map(([field, msg]) => (
+              <li key={field}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    const el =
+                      document.getElementById(field) ||
+                      (document.querySelector(`[name="${field}"]`) as HTMLElement | null);
+                    el?.focus();
+                  }}
+                  className="hover:underline text-left cursor-pointer"
+                >
+                  {msg}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       <form onSubmit={handleSubmit} noValidate className="space-y-4">
         {QUESTIONS.map((q) => {
@@ -100,7 +134,6 @@ export function BookingForm({
                   id="firstName"
                   label="First name"
                   required
-                  placeholder="Rahul"
                   value={formData.firstName}
                   onChange={(e) => {
                     setField("firstName", e.target.value);
@@ -114,7 +147,6 @@ export function BookingForm({
                   id="lastName"
                   label="Last name"
                   required
-                  placeholder="Sharma"
                   value={formData.lastName}
                   onChange={(e) => {
                     setField("lastName", e.target.value);
@@ -136,7 +168,6 @@ export function BookingForm({
                 label={q.label}
                 required={q.required}
                 type="email"
-                placeholder="rahul@example.com"
                 value={formData.email}
                 onChange={(e) => {
                   setField("email", e.target.value);
@@ -153,18 +184,18 @@ export function BookingForm({
             return (
               <div key={q.id}>
                 {formData.guests.length > 0 && (
-                  <div className="flex flex-wrap gap-2 mb-2">
+                  <div className="flex flex-wrap gap-2 mb-2.5">
                     {formData.guests.map((g) => (
                       <div
                         key={g}
-                        className="inline-flex items-center gap-1.5 text-xs bg-primary-tint border border-primary/20 text-primary px-2.5 py-1 rounded-full font-medium"
+                        className="inline-flex items-center gap-1.5 text-xs bg-primary-tint/80 border border-primary/20 text-primary px-3 py-1 rounded-full font-medium shadow-2xs"
                       >
                         <span>{g}</span>
                         <button
                           type="button"
                           onClick={() => removeGuest(g)}
                           aria-label={`Remove guest ${g}`}
-                          className="hover:text-error transition-colors"
+                          className="hover:text-red-600 transition-colors cursor-pointer"
                         >
                           <X size={12} />
                         </button>
@@ -178,7 +209,6 @@ export function BookingForm({
                     <div className="flex-1">
                       <TextInput
                         id="guestEmail"
-                        placeholder="colleague@example.com"
                         type="email"
                         value={guestEmail}
                         onChange={(e) => setGuestEmail(e.target.value)}
@@ -233,7 +263,6 @@ export function BookingForm({
                 id="city"
                 label={q.label}
                 required={q.required}
-                placeholder="e.g. Noida, Gurgaon, Delhi"
                 value={formData.city}
                 onChange={(e) => {
                   setField("city", e.target.value);
@@ -318,13 +347,18 @@ export function BookingForm({
           return null;
         })}
 
-        {/* Submit Button */}
-        <div className="pt-3">
+        {/* Consent line */}
+        <p className="text-xs text-muted leading-relaxed pt-1">
+          By proceeding, you confirm that you have read and agree to Terms of Use and Privacy Notice.
+        </p>
+
+        {/* Submit Pill Button */}
+        <div className="pt-2">
           <Button
             type="submit"
             fullWidth
             loading={submitting}
-            className="w-full text-base font-bold bg-primary hover:bg-primary-hover text-white py-3 rounded-lg"
+            className="w-full text-sm font-semibold bg-primary hover:bg-primary-hover text-white py-3 rounded-full cursor-pointer shadow-xs transition-colors"
           >
             {submitting ? "Scheduling…" : "Schedule Event"}
           </Button>
