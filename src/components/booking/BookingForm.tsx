@@ -174,7 +174,7 @@ export function BookingForm({
                 )}
 
                 {guestInputVisible ? (
-                  <div className="flex gap-2 items-start">
+                  <div className="flex gap-2 items-start animate-in fade-in duration-150">
                     <div className="flex-1">
                       <TextInput
                         id="guestEmail"
@@ -195,7 +195,7 @@ export function BookingForm({
                     <button
                       type="button"
                       onClick={addGuest}
-                      className="px-3 py-2 text-xs shrink-0 rounded-lg bg-primary text-white font-semibold cursor-pointer"
+                      className="px-3.5 py-2.5 text-xs rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold transition-colors cursor-pointer shadow-xs"
                     >
                       Add
                     </button>
@@ -206,7 +206,8 @@ export function BookingForm({
                         setGuestEmail("");
                         setGuestError(undefined);
                       }}
-                      className="p-2 text-muted hover:text-nearblack transition-colors"
+                      aria-label="Cancel adding guest"
+                      className="p-2.5 text-muted hover:text-nearblack transition-colors cursor-pointer"
                     >
                       <X size={16} />
                     </button>
@@ -215,10 +216,10 @@ export function BookingForm({
                   <button
                     type="button"
                     onClick={() => setGuestInputVisible(true)}
-                    className="inline-flex items-center gap-1.5 text-xs font-semibold text-primary hover:underline cursor-pointer"
+                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-primary text-xs font-semibold text-primary hover:bg-primary-tint/50 transition-colors cursor-pointer"
                   >
                     <Plus size={14} />
-                    {q.label}
+                    <span>Add guests</span>
                   </button>
                 )}
               </div>
