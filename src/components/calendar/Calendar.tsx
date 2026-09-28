@@ -2,8 +2,9 @@ import { CalendarHeader } from "./CalendarHeader";
 import { CalendarGrid } from "./CalendarGrid";
 import { TimezoneSelector } from "./TimezoneSelector";
 import { useAvailability } from "../../hooks/useAvailability";
-import { formatMonthYear, formatLongDate, convertSlotTime } from "../../lib/date-utils";
-import { getSlotsForDate } from "../../lib/availability";
+import { formatMonthYear, formatDayHeader, formatSlotTime } from "../../lib/format";
+import { getSlotsForDate, formatIsoDate } from "../../../shared/slots";
+import { toZonedTime } from "date-fns-tz";
 import type { TimeSlot } from "../../types/booking";
 import { clsx } from "clsx";
 
@@ -48,12 +49,23 @@ export function Calendar({
   const todayFirst = new Date(today.getFullYear(), today.getMonth(), 1);
   const canGoPrev = currentMonth > todayFirst;
 
-  const activeSlots = selectedDate ? getSlotsForDate(selectedDate) : [];
+  const activeSlots: TimeSlot[] = selectedDate
+    ? getSlotsForDate(formatIsoDate(selectedDate), today).map((inst) => {
+        const istDate = toZonedTime(inst, "Asia/Kolkata");
+        return {
+          label: formatSlotTime(inst, "Asia/Kolkata"),
+          hour: istDate.getHours(),
+          minute: istDate.getMinutes(),
+          iso: inst.toISOString(),
+        };
+      })
+    : [];
 
-  const formatSlotTime = (slot: TimeSlot) => {
-    if (!selectedDate) return slot.label;
-    if (timezone === "Asia/Kolkata") return slot.label;
-    return convertSlotTime(selectedDate, slot.hour, slot.minute, timezone);
+  const displaySlotTime = (slot: TimeSlot) => {
+    if (slot.iso) {
+      return formatSlotTime(new Date(slot.iso), timezone);
+    }
+    return slot.label;
   };
 
   return (
@@ -108,7 +120,7 @@ export function Calendar({
         {selectedDate && (
           <div className="w-full md:w-[240px] pt-4 md:pt-0 border-t md:border-t-0 md:border-l md:border-border md:pl-6">
             <p className="text-sm font-semibold text-nearblack mb-4">
-              {formatLongDate(selectedDate)}
+              {formatDayHeader(selectedDate, timezone)}
             </p>
 
             {activeSlots.length === 0 ? (
@@ -127,7 +139,7 @@ export function Calendar({
                             type="button"
                             className="flex-1 py-3 px-3 rounded-lg bg-[#3E325E] text-white text-xs font-bold text-center cursor-default shadow-xs"
                           >
-                            {formatSlotTime(slot)}
+                            {displaySlotTime(slot)}
                           </button>
                           <button
                             type="button"
@@ -143,7 +155,7 @@ export function Calendar({
                           onClick={() => onSlotSelect(slot)}
                           className="w-full py-3 px-4 rounded-lg border border-primary text-primary font-semibold text-xs tracking-wide bg-white hover:bg-primary hover:text-white transition-all duration-150 cursor-pointer text-center"
                         >
-                          {formatSlotTime(slot)}
+                          {displaySlotTime(slot)}
                         </button>
                       )}
                     </div>

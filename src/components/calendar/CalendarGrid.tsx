@@ -1,5 +1,5 @@
 import { clsx } from "clsx";
-import { getCalendarWeeks } from "../../lib/date-utils";
+import { getCalendarWeeks } from "../../lib/format";
 
 const MON_SUN = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"];
 

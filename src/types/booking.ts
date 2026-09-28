@@ -4,6 +4,7 @@ export interface TimeSlot {
   label: string;       // e.g. "2:00 PM"
   hour: number;        // 24-hour
   minute: number;
+  iso?: string;
 }
 
 export interface BookingFormData {

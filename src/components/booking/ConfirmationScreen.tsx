@@ -1,6 +1,7 @@
 import { CheckCircle, CalendarPlus, RotateCcw } from "lucide-react";
 import type { TimeSlot } from "../../types/booking";
-import { formatLongDate, convertSlotTime } from "../../lib/date-utils";
+import { formatLongDate, formatSlotTime, formatIsoDate } from "../../lib/format";
+import { fromZonedTime } from "date-fns-tz";
 import { downloadICS } from "../../lib/ics";
 import {
   EVENT_TITLE,
@@ -30,17 +31,17 @@ export function ConfirmationScreen({
   const tzLabel =
     SUPPORTED_TIMEZONES.find((t) => t.value === timezone)?.label ?? timezone;
 
-  const slotLabel =
-    timezone === "Asia/Kolkata"
-      ? slot.label
-      : convertSlotTime(date, slot.hour, slot.minute, timezone);
+  const startDate = slot.iso
+    ? new Date(slot.iso)
+    : fromZonedTime(
+        `${formatIsoDate(date)}T${String(slot.hour).padStart(2, "0")}:${String(slot.minute).padStart(2, "0")}:00`,
+        "Asia/Kolkata"
+      );
+  const endDate = new Date(startDate.getTime() + 60 * 60 * 1000);
 
-  const endHour = Math.floor((slot.hour * 60 + slot.minute + 60) / 60);
-  const endMin = (slot.hour * 60 + slot.minute + 60) % 60;
-  const endLabel =
-    timezone === "Asia/Kolkata"
-      ? `${endHour % 12 || 12}:${String(endMin).padStart(2, "0")} ${endHour >= 12 ? "PM" : "AM"}`
-      : convertSlotTime(date, endHour, endMin, timezone);
+  const slotLabel = formatSlotTime(startDate, timezone);
+  const endLabel = formatSlotTime(endDate, timezone);
+  const dateLabel = formatLongDate(startDate, timezone);
 
   const displayName = attendeeName?.trim() || "Attendee";
 
@@ -82,7 +83,7 @@ export function ConfirmationScreen({
           </div>
           <div>
             <p className="text-xs uppercase font-semibold text-muted mb-0.5">Date</p>
-            <p className="text-nearblack font-semibold">{formatLongDate(date)}</p>
+            <p className="text-nearblack font-semibold">{dateLabel}</p>
           </div>
           <div>
             <p className="text-xs uppercase font-semibold text-muted mb-0.5">Time</p>
