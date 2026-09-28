@@ -1,59 +1,39 @@
-# Security Notes
+# Security Policy
 
-This document outlines the security posture of the booking application and the additional controls that must be in place before this goes live with real user data.
+This document details the security controls implemented in the booking application.
 
-## Current state
+## Implemented Security Controls
 
-The application is a client-side React/TypeScript SPA. It performs no real network requests and stores no data outside of in-memory React state. All validation runs in the browser.
+### Dual-Layer Input Validation
+- Client-side validation validates user input on blur and form submission.
+- Serverless API (`api/bookings.ts`) independently parses and validates all payloads using Zod schemas defined in `shared/validation.ts`.
+- Text inputs enforce character limits (e.g., 50 characters for names, 100 characters for city) and reject HTML markup patterns to protect against injection attacks.
+- Phone numbers enforce a 10-digit numeric format.
+- Email fields enforce standard email format and length constraints.
 
-**Applied hardening (already in place):**
+### Database Protection and Concurrency Safety
+- All PostgreSQL queries use parameterized tagged template literals (`neon`) to prevent SQL injection.
+- The `start_at` column has a `UNIQUE` constraint, enforcing atomicity against concurrent race conditions. Duplicate booking attempts return HTTP 409 Conflict.
+- Business availability constraints (weekly recurrence, blocked dates, minimum 60-minute notice, and 15-booking monthly caps) are validated server-side prior to insert.
 
-- All user inputs validated on blur and on submit with max-length enforcement and HTML-injection detection
-- Shared `lib/validation.ts` exports rules in a format suitable for reuse server-side
-- Honeypot anti-bot field on the booking form; submit button disabled during pending requests
-- Content-Security-Policy meta tag restricting `script-src`, `style-src`, `font-src`, `connect-src`, and `frame-ancestors`
-- No PII (name, email, phone, city) logged to the browser console anywhere in the codebase
-- No analytics, tracking scripts, or third-party endpoints called
-- No hardcoded API keys, credentials, or secrets
-- `.env`, `.env.local`, and `.env.*.local` are gitignored; `.env.example` documents the expected variables without real values
+### Anti-Bot Protection and Rate Limiting
+- A hidden honeypot field (`website`) is present in the form and invisible to standard users. Submissions containing content in this field are rejected with HTTP 400.
+- An in-memory sliding window rate limiter protects `/api/bookings`, restricting client IPs to 5 requests per minute. Exceeded requests receive HTTP 429 Too Many Requests with a `Retry-After` header. For distributed multi-region deployments, an external store such as Redis is recommended.
 
----
+### HTTP Response Headers and CSP
+HTTP security headers are configured via `vercel.json`:
+- `Content-Security-Policy`: Restricts scripts, fonts (`fonts.gstatic.com`), styles (`fonts.googleapis.com`), images, and connect sources. Enforces `frame-ancestors 'none'` to mitigate clickjacking.
+- `X-Frame-Options`: Set to `DENY`.
+- `X-Content-Type-Options`: Set to `nosniff`.
+- `Referrer-Policy`: Set to `strict-origin-when-cross-origin`.
+- `Permissions-Policy`: Disables camera, microphone, and geolocation APIs.
 
-## Before deploying with a real backend
+### Data Privacy and State Hygiene
+- No Personally Identifiable Information (PII) is written to server logs or client console outputs.
+- No client-side storage (`localStorage` or `sessionStorage`) is used to persist sensitive user submissions.
+- Application state is synchronized through URL parameters and component memory.
 
-### Server-side validation
-Mirror every rule in `lib/validation.ts` on the server. Client-side validation is UX — it is not a security control. Never persist data that hasn't been validated independently on the server.
-
-### Rate limiting
-Apply per-IP and per-phone/email rate limits on the booking submission endpoint (e.g. max 3 bookings per phone per 24 h). A solution like Upstash Ratelimit or a Redis-backed middleware works well here.
-
-### Database / storage
-- Use parameterized queries or a type-safe ORM exclusively — no raw SQL string interpolation.
-- Encrypt personal data at rest (name, email, phone number). Consider field-level encryption for phone numbers.
-- Define and document a data retention policy (e.g. booking records deleted 90 days after the appointment date).
-
-### CORS
-Set `Access-Control-Allow-Origin` to the exact production domain only — not `*`.
-
-### HTTPS
-Enforce HTTPS-only in production. Redirect all HTTP traffic to HTTPS at the load balancer/CDN level. Use `Strict-Transport-Security: max-age=31536000; includeSubDomains`.
-
-### Cookies / sessions
-If authentication or session tokens are introduced: `Secure`, `HttpOnly`, `SameSite=Strict` on all cookies. Do not store session tokens in `localStorage`.
-
-### HTTP security headers
-Configure these at the server/CDN layer (they are documented in `index.html` comments but are more effective as HTTP headers):
-
-```
-X-Content-Type-Options: nosniff
-X-Frame-Options: DENY
-Referrer-Policy: strict-origin-when-cross-origin
-Permissions-Policy: camera=(), microphone=(), geolocation=()
-Strict-Transport-Security: max-age=31536000; includeSubDomains; preload
-```
-
-### CAPTCHA / bot protection
-For high-traffic deployments, replace or supplement the honeypot field with a server-validated CAPTCHA (e.g. Cloudflare Turnstile, hCaptcha) on the booking submission endpoint.
-
-### Vulnerability disclosure
-If you discover a security issue, please report it privately before disclosing publicly.
+### Secrets Management
+- All database credentials reside in environment variables (`DATABASE_URL`).
+- `.env*` files are excluded from git history via `.gitignore`.
+- `.env.example` provides the template without real credentials.
