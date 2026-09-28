@@ -8,8 +8,9 @@ interface Option {
 interface CheckboxGroupProps {
   label: string;
   name: string;
-  options: Option[];
+  options: readonly Option[];
   values: string[];
+  required?: boolean;
   onChange: (values: string[]) => void;
 }
 
@@ -18,6 +19,7 @@ export function CheckboxGroup({
   name,
   options,
   values,
+  required,
   onChange,
 }: CheckboxGroupProps) {
   const toggle = (val: string) => {
@@ -29,7 +31,14 @@ export function CheckboxGroup({
 
   return (
     <fieldset className="space-y-1.5">
-      <legend className="form-label">{label}</legend>
+      <legend className="form-label">
+        {label}
+        {required && (
+          <span className="text-red-500 ml-0.5" aria-hidden="true">
+            *
+          </span>
+        )}
+      </legend>
       <div className="flex flex-wrap gap-2.5 mt-1">
         {options.map((opt) => {
           const checked = values.includes(opt.value);

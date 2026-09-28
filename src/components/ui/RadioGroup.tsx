@@ -8,9 +8,10 @@ interface Option {
 interface RadioGroupProps {
   label: string;
   name: string;
-  options: readonly string[] | Option[];
+  options: readonly string[] | readonly Option[];
   value: string;
   error?: string;
+  required?: boolean;
   onChange: (value: string) => void;
   onBlur?: () => void;
 }
@@ -21,6 +22,7 @@ export function RadioGroup({
   options,
   value,
   error,
+  required,
   onChange,
   onBlur,
 }: RadioGroupProps) {
@@ -30,7 +32,14 @@ export function RadioGroup({
 
   return (
     <fieldset className="space-y-1.5">
-      <legend className="form-label">{label}</legend>
+      <legend className="form-label">
+        {label}
+        {required && (
+          <span className="text-red-500 ml-0.5" aria-hidden="true">
+            *
+          </span>
+        )}
+      </legend>
       <div className="grid grid-cols-1 gap-2.5 mt-1">
         {normalised.map((opt) => {
           const id = `${name}-${opt.value}`;

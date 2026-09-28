@@ -7,10 +7,11 @@ interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   error?: string;
   id: string;
+  required?: boolean;
 }
 
 export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
-  ({ label, error, id, className, maxLength, ...rest }, ref) => {
+  ({ label, error, id, className, maxLength, required, ...rest }, ref) => {
     const resolvedMax = maxLength ?? FIELD_MAX_LENGTHS[id];
 
     return (
@@ -18,6 +19,11 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         {label && (
           <label htmlFor={id} className="form-label">
             {label}
+            {required && (
+              <span className="text-red-500 ml-0.5" aria-hidden="true">
+                *
+              </span>
+            )}
           </label>
         )}
         <input

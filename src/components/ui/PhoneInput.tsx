@@ -7,10 +7,11 @@ interface PhoneInputProps
   label?: string;
   error?: string;
   id: string;
+  required?: boolean;
 }
 
 export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
-  ({ label, error, id, className, onChange, ...rest }, ref) => {
+  ({ label, error, id, className, required, onChange, ...rest }, ref) => {
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
       let val = e.target.value.replace(/\D/g, "");
       // Handle pasting numbers copied with +91 or 0 prefix
@@ -28,6 +29,11 @@ export const PhoneInput = forwardRef<HTMLInputElement, PhoneInputProps>(
         {label && (
           <label htmlFor={id} className="form-label">
             {label}
+            {required && (
+              <span className="text-red-500 ml-0.5" aria-hidden="true">
+                *
+              </span>
+            )}
           </label>
         )}
         <div

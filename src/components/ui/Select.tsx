@@ -9,17 +9,23 @@ interface SelectOption {
 
 interface SelectProps extends SelectHTMLAttributes<HTMLSelectElement> {
   label?: string;
-  options: SelectOption[];
+  options: readonly SelectOption[];
   error?: string;
   id: string;
+  required?: boolean;
 }
 
 export const Select = forwardRef<HTMLSelectElement, SelectProps>(
-  ({ label, options, error, id, className, ...rest }, ref) => (
+  ({ label, options, error, id, className, required, ...rest }, ref) => (
     <div className="flex flex-col gap-1.5">
       {label && (
         <label htmlFor={id} className="form-label">
           {label}
+          {required && (
+            <span className="text-red-500 ml-0.5" aria-hidden="true">
+              *
+            </span>
+          )}
         </label>
       )}
       <div className="relative">
