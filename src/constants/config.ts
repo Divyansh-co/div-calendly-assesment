@@ -1,6 +1,6 @@
 export const HOST_NAME = "Divyansh Mishra";
 export const EVENT_TITLE = "wealth multiplication via agri land investments";
-export const MEETING_DURATION_LABEL = "1 hour";
+export const MEETING_DURATION_LABEL = "60 min";
 export const MEETING_DURATION_MINUTES = 60;
 
 // All slot times are defined in IST (Asia/Kolkata)

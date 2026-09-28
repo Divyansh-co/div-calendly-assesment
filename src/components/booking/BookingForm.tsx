@@ -26,6 +26,9 @@ interface BookingFormProps {
 }
 
 export function BookingForm({
+  date: _date,
+  slot: _slot,
+  timezone: _timezone,
   formData,
   onUpdate,
   onBack,
