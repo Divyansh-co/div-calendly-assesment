@@ -9,9 +9,33 @@ export function formatIsoDate(date: Date, timezone: string = AVAILABILITY_CONFIG
   return formatInTimeZone(date, timezone, "yyyy-MM-dd");
 }
 
+export function getMonthlyBookingsCount(
+  monthKey: string,
+  bookedSlots: (string | Date)[] = []
+): number {
+  let count = 0;
+  for (const b of bookedSlots) {
+    const bDate = typeof b === "string" ? new Date(b) : b;
+    if (isNaN(bDate.getTime())) continue;
+    const key = formatInTimeZone(bDate, AVAILABILITY_CONFIG.timezone, "yyyy-MM");
+    if (key === monthKey) {
+      count++;
+    }
+  }
+  return count;
+}
+
+export function isMonthCapped(
+  monthKey: string,
+  bookedSlots: (string | Date)[] = []
+): boolean {
+  return getMonthlyBookingsCount(monthKey, bookedSlots) >= AVAILABILITY_CONFIG.monthlyCap;
+}
+
 /**
  * Returns start instants (Date objects) in UTC for the given ISO date string (YYYY-MM-DD)
  * calculated in Asia/Kolkata timezone.
+ * Enforces monthly cap of 15 bookings.
  * Filters out past slots earlier than now + minNoticeMinutes.
  * Filters out already booked slots.
  */
@@ -25,6 +49,11 @@ export function getSlotsForDate(
   }
 
   if (isBlockedDate(isoDate)) {
+    return [];
+  }
+
+  const monthKey = isoDate.slice(0, 7);
+  if (isMonthCapped(monthKey, bookedSlots)) {
     return [];
   }
 
