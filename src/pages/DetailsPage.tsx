@@ -8,6 +8,7 @@ import { formatIsoDate, getSlotsForDate } from "../../shared/slots";
 import { formatSlotTime } from "../lib/format";
 import { toZonedTime } from "date-fns-tz";
 import { HOST_NAME, EVENT_TITLE } from "../constants/config";
+import { createBooking, ApiError } from "../api/client";
 
 export function DetailsPage() {
   const { slotIso } = useParams<{ slotIso: string }>();
@@ -28,6 +29,7 @@ export function DetailsPage() {
     landSize: [],
     whatsapp: "",
   });
+  const [serverError, setServerError] = useState<string | null>(null);
 
   const decodedIso = decodeURIComponent(slotIso || "");
   const slotDate = new Date(decodedIso);
@@ -65,27 +67,44 @@ export function DetailsPage() {
     setFormData((prev) => ({ ...prev, ...updates }));
   };
 
-  const handleConfirmBooking = () => {
-    const bookingId = `booking_${Date.now()}`;
-    const newBooking = {
-      id: bookingId,
-      createdAt: new Date().toISOString(),
-      host: HOST_NAME,
-      eventTitle: EVENT_TITLE,
-      date: slotDate.toISOString(),
-      slot,
-      timezone: AVAILABILITY_CONFIG.timezone,
-      attendee: formData,
-    };
-
+  const handleConfirmBooking = async () => {
+    setServerError(null);
     try {
-      const existing = JSON.parse(localStorage.getItem("booked_meetings") || "[]");
-      localStorage.setItem("booked_meetings", JSON.stringify([...existing, newBooking]));
-    } catch (e) {
-      console.error("Failed to save booking to localStorage", e);
-    }
+      const res = await createBooking({
+        slotIso: slotDate.toISOString(),
+        firstName: formData.firstName,
+        lastName: formData.lastName,
+        email: formData.email,
+        guests: formData.guests,
+        city: formData.city,
+        hometown: formData.hometown,
+        income: formData.income,
+        landSizes: formData.landSize,
+        whatsapp: formData.whatsapp,
+        website: "",
+      });
 
-    navigate(`/confirmed/${bookingId}`, { state: { booking: newBooking } });
+      const newBooking = {
+        id: res.id,
+        createdAt: new Date().toISOString(),
+        host: HOST_NAME,
+        eventTitle: EVENT_TITLE,
+        date: slotDate.toISOString(),
+        slot,
+        timezone: AVAILABILITY_CONFIG.timezone,
+        attendee: formData,
+      };
+
+      navigate(`/confirmed/${res.id}`, { state: { booking: newBooking } });
+    } catch (err: unknown) {
+      if (err instanceof ApiError && err.status === 409) {
+        setServerError("This slot has already been booked. Please select another time.");
+      } else if (err instanceof Error) {
+        setServerError(err.message);
+      } else {
+        setServerError("Failed to schedule event. Please try again.");
+      }
+    }
   };
 
   return (
@@ -104,6 +123,7 @@ export function DetailsPage() {
         onUpdate={handleUpdateFormData}
         onBack={handleBack}
         onConfirm={handleConfirmBooking}
+        serverError={serverError}
       />
     </BookingLayout>
   );

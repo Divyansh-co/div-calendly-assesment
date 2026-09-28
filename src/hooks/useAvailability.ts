@@ -1,8 +1,28 @@
-import { useMemo } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { isBookableDay, formatIsoDate } from "../../shared/slots";
+import { fetchAvailability } from "../api/client";
 
-export function useAvailability(year: number, month: number, bookedSlots: string[] = []) {
+export function useAvailability(year: number, month: number, initialBookedSlots: string[] = []) {
+  const [bookedSlots, setBookedSlots] = useState<string[]>(initialBookedSlots);
   const today = useMemo(() => new Date(), []);
+
+  const monthKey = `${year}-${String(month + 1).padStart(2, "0")}`;
+
+  useEffect(() => {
+    let cancelled = false;
+    fetchAvailability(monthKey)
+      .then((data) => {
+        if (!cancelled && data.bookedStarts) {
+          setBookedSlots(data.bookedStarts);
+        }
+      })
+      .catch(() => {
+        // Fallback gracefully if API is offline or unconfigured
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [monthKey]);
 
   const bookableDates = useMemo(() => {
     const result: Date[] = [];
@@ -24,5 +44,5 @@ export function useAvailability(year: number, month: number, bookedSlots: string
     return isBookableDay(iso, today, bookedSlots);
   };
 
-  return { bookableDates, hasBookableDates, checkDate, today };
+  return { bookableDates, hasBookableDates, checkDate, today, bookedSlots };
 }

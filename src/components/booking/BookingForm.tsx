@@ -18,7 +18,8 @@ interface BookingFormProps {
   formData: BookingFormData;
   onUpdate: (data: Partial<BookingFormData>) => void;
   onBack: () => void;
-  onConfirm: () => void;
+  onConfirm: () => Promise<void> | void;
+  serverError?: string | null;
 }
 
 export function BookingForm({
@@ -29,6 +30,7 @@ export function BookingForm({
   onUpdate,
   onBack: _onBack,
   onConfirm,
+  serverError,
 }: BookingFormProps) {
   const [errors, setErrors] = useState<FormErrors>({});
   const [guestInputVisible, setGuestInputVisible] = useState(false);
@@ -83,9 +85,11 @@ export function BookingForm({
     if (submitting) return;
 
     setSubmitting(true);
-    await new Promise((r) => setTimeout(r, 400));
-    setSubmitting(false);
-    onConfirm();
+    try {
+      await onConfirm();
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const errorEntries = Object.entries(errors).filter(([_, msg]) => !!msg);
@@ -351,6 +355,16 @@ export function BookingForm({
         <p className="text-xs text-muted leading-relaxed pt-1">
           By proceeding, you confirm that you have read and agree to Terms of Use and Privacy Notice.
         </p>
+
+        {/* Server error alert */}
+        {serverError && (
+          <div
+            role="alert"
+            className="p-3 bg-red-50 border border-red-200 rounded-xl text-xs text-red-700 font-medium"
+          >
+            {serverError}
+          </div>
+        )}
 
         {/* Submit Pill Button */}
         <div className="pt-2">

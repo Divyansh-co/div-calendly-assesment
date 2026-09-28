@@ -26,7 +26,7 @@ interface StoredBooking {
 }
 
 export function ConfirmedPage() {
-  const { bookingId } = useParams<{ bookingId: string }>();
+  const { bookingId: _bookingId } = useParams<{ bookingId: string }>();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -34,14 +34,8 @@ export function ConfirmedPage() {
     if (location.state && (location.state as { booking?: StoredBooking }).booking) {
       return (location.state as { booking: StoredBooking }).booking;
     }
-    if (!bookingId) return null;
-    try {
-      const stored = JSON.parse(localStorage.getItem("booked_meetings") || "[]") as StoredBooking[];
-      return stored.find((b) => b.id === bookingId) || null;
-    } catch {
-      return null;
-    }
-  }, [bookingId, location.state]);
+    return null;
+  }, [location.state]);
 
   if (!booking) {
     return <Navigate to="/" replace />;

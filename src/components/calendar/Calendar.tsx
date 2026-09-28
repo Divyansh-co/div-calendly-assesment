@@ -34,7 +34,7 @@ export function Calendar({
   const year = currentMonth.getFullYear();
   const month = currentMonth.getMonth();
 
-  const { hasBookableDates, checkDate, today } = useAvailability(year, month);
+  const { hasBookableDates, checkDate, today, bookedSlots } = useAvailability(year, month);
 
   const goPrev = () => {
     const d = new Date(year, month - 1, 1);
@@ -50,7 +50,7 @@ export function Calendar({
   const canGoPrev = currentMonth > todayFirst;
 
   const activeSlots: TimeSlot[] = selectedDate
-    ? getSlotsForDate(formatIsoDate(selectedDate), today).map((inst) => {
+    ? getSlotsForDate(formatIsoDate(selectedDate), today, bookedSlots).map((inst) => {
         const istDate = toZonedTime(inst, "Asia/Kolkata");
         return {
           label: formatSlotTime(inst, "Asia/Kolkata"),
