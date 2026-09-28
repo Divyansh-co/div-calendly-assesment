@@ -50,8 +50,8 @@ export function CheckboxGroup({
               className={clsx(
                 "group flex items-center gap-2.5 cursor-pointer rounded-xl border px-3.5 py-2.5 text-sm transition-all duration-150 select-none shadow-2xs",
                 checked
-                  ? "border-primary bg-primary-tint/70 text-navy-900 font-semibold ring-1 ring-primary/30"
-                  : "border-border bg-surface text-slate-700 hover:border-primary/40 hover:bg-primary-tint/20"
+                  ? "border-primary bg-primary-tint/70 text-nearblack font-semibold ring-1 ring-primary/30"
+                  : "border-border bg-surface text-nearblack hover:border-primary/40 hover:bg-primary-tint/20"
               )}
             >
               <input
@@ -68,7 +68,7 @@ export function CheckboxGroup({
                   "w-4 h-4 rounded-[5px] border flex items-center justify-center shrink-0 transition-all duration-150 ease-out",
                   checked
                     ? "bg-primary border-primary text-white shadow-2xs"
-                    : "bg-white border-slate-300 group-hover:border-primary/60"
+                    : "bg-white border-border group-hover:border-primary/60"
                 )}
                 aria-hidden="true"
               >

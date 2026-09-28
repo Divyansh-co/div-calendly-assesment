@@ -33,11 +33,11 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
           ref={ref}
           id={id}
           className={clsx(
-            "w-full rounded-xl border bg-surface px-3.5 py-2.5 text-sm font-medium text-navy-900 appearance-none pr-10 cursor-pointer transition-all duration-150 ease-out",
+            "w-full rounded-xl border bg-surface px-3.5 py-2.5 text-sm font-medium text-nearblack appearance-none pr-10 cursor-pointer transition-all duration-150 ease-out",
             "focus:outline-none focus:ring-0",
             error
               ? "border-error focus:border-error focus:shadow-[0_0_0_3px_rgba(220,38,38,0.12)]"
-              : "border-border hover:border-slate-300 focus:border-primary focus:shadow-[0_0_0_3px_rgba(37,99,235,0.12)]",
+              : "border-border hover:border-primary/40 focus:border-primary focus:shadow-[0_0_0_3px_rgba(75,58,158,0.12)]",
             className
           )}
           aria-invalid={!!error}
@@ -50,7 +50,7 @@ export const Select = forwardRef<HTMLSelectElement, SelectProps>(
             </option>
           ))}
         </select>
-        <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-slate-400">
+        <div className="pointer-events-none absolute right-3.5 top-1/2 -translate-y-1/2 text-muted">
           <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
             <polyline points="6 9 12 15 18 9" />
           </svg>

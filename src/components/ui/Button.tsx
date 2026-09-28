@@ -21,9 +21,9 @@ export function Button({
 
   const variants = {
     primary:
-      "bg-primary text-white shadow-xs hover:bg-primary-hover hover:shadow-md active:scale-[0.98] disabled:bg-slate-200 disabled:text-slate-400 disabled:shadow-none disabled:active:scale-100 disabled:cursor-not-allowed",
+      "bg-primary text-white shadow-xs hover:bg-primary-hover hover:shadow-md active:scale-[0.98] disabled:bg-disabled disabled:text-muted disabled:shadow-none disabled:active:scale-100 disabled:cursor-not-allowed",
     outline:
-      "border border-border text-slate-700 bg-surface shadow-xs hover:bg-slate-50 hover:border-slate-300 hover:text-navy-900 active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed",
+      "border border-border text-nearblack bg-surface shadow-xs hover:bg-primary-tint/30 hover:border-primary/40 hover:text-nearblack active:scale-[0.98] disabled:opacity-40 disabled:cursor-not-allowed",
     ghost:
       "text-primary hover:bg-primary-tint active:scale-[0.98] disabled:opacity-40",
   };

@@ -1,11 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
-  *, *::before, *::after {
+  *,
+  *::before,
+  *::after {
     box-sizing: border-box;
   }
 
@@ -15,22 +17,27 @@
   }
 
   body {
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    color: #1A1A1A;
-    background-color: #F5E6C8;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    color: #1a1a1a;
+    background-color: #fff4b8;
     line-height: 1.5;
     min-height: 100dvh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    color: #1A1A1A;
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: #1a1a1a;
     letter-spacing: -0.015em;
   }
 
   :focus-visible {
-    outline: 2px solid #5B4B8A;
+    outline: 2px solid #4b3a9e;
     outline-offset: 2px;
     border-radius: 6px;
   }
@@ -41,10 +48,9 @@
 }
 
 @layer components {
-  /* Calendly style pure white card with very light butter-yellow border */
   .calendly-card {
-    background-color: #FFFFFF;
-    border: 1px solid #EDE0C4;
+    background-color: #ffffff;
+    border: 1px solid #f5e8b0;
     border-radius: 12px;
     box-shadow: 0 4px 18px rgba(0, 0, 0, 0.05);
   }
@@ -78,7 +84,7 @@
   }
 
   .form-input:focus {
-    box-shadow: 0 0 0 3px rgba(91, 75, 138, 0.15);
+    box-shadow: 0 0 0 3px rgba(75, 58, 158, 0.15);
   }
 
   .form-input-error {
@@ -93,7 +99,6 @@
     @apply text-error text-xs font-medium mt-1;
   }
 
-  /* Custom scrollbar for description */
   .custom-scrollbar::-webkit-scrollbar {
     width: 6px;
   }
@@ -101,10 +106,10 @@
     background: transparent;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb {
-    background: #E5D5B8;
+    background: #e5d5b8;
     border-radius: 3px;
   }
   .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: #D8C3A0;
+    background: #d8c3a0;
   }
 }
