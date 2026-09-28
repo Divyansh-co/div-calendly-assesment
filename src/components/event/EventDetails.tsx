@@ -9,6 +9,7 @@ import {
 import type { TimeSlot } from "../../types/booking";
 import { formatLongDate, formatSlotTime, formatIsoDate } from "../../lib/format";
 import { fromZonedTime } from "date-fns-tz";
+import { Footer } from "../layout/Footer";
 
 interface EventDetailsProps {
   step?: number;
@@ -156,6 +157,8 @@ export function EventDetails({
           </p>
         </div>
       </div>
+
+      <Footer />
     </div>
   );
 }

@@ -36,8 +36,9 @@ export function BookingLayout({
         {/* Right Panel */}
         <div className="flex-1 p-6 lg:p-8 relative min-w-0 bg-white flex flex-col justify-start">
           <div className="absolute top-0 right-0 overflow-hidden w-28 h-28 pointer-events-none z-20">
-            <div className="bg-primary text-white text-[9px] font-bold tracking-widest uppercase py-1 w-36 text-center absolute top-4 -right-9 rotate-45 shadow-xs">
-              POWERED BY
+            <div className="bg-primary text-white text-[8px] font-bold tracking-widest uppercase py-1 w-36 text-center absolute top-4 -right-9 rotate-45 shadow-xs flex flex-col items-center leading-tight">
+              <span>POWERED BY</span>
+              <span className="text-[7.5px] font-extrabold tracking-widest opacity-95">SCHEDULER</span>
             </div>
           </div>
 

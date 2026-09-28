@@ -1,5 +1,7 @@
 import { Globe, ChevronDown } from "lucide-react";
 import { SUPPORTED_TIMEZONES } from "../../constants/config";
+import { useNow } from "../../hooks/useNow";
+import { formatInTimeZone } from "date-fns-tz";
 
 interface TimezoneSelectorProps {
   value: string;
@@ -7,9 +9,11 @@ interface TimezoneSelectorProps {
 }
 
 export function TimezoneSelector({ value, onChange }: TimezoneSelectorProps) {
+  const now = useNow(60000);
+
   return (
     <div className="mt-6 pt-4 border-t border-border">
-      <div className="flex items-center gap-2 text-xs font-semibold text-nearblack mb-1">
+      <div className="flex items-center gap-2 text-xs font-semibold text-nearblack mb-1.5">
         <Globe size={15} className="text-primary shrink-0" />
         <span>Time zone</span>
       </div>
@@ -20,11 +24,14 @@ export function TimezoneSelector({ value, onChange }: TimezoneSelectorProps) {
           aria-label="Select your time zone"
           className="w-full text-xs font-medium text-nearblack bg-white border border-border rounded-lg py-2 pl-3 pr-8 focus:outline-none focus:border-primary focus:ring-1 focus:ring-primary cursor-pointer appearance-none"
         >
-          {SUPPORTED_TIMEZONES.map((tz) => (
-            <option key={tz.value} value={tz.value}>
-              {tz.label}
-            </option>
-          ))}
+          {SUPPORTED_TIMEZONES.map((tz) => {
+            const timeStr = formatInTimeZone(now, tz.value, "h:mmaaa");
+            return (
+              <option key={tz.value} value={tz.value}>
+                {tz.label} ({timeStr})
+              </option>
+            );
+          })}
         </select>
         <ChevronDown
           size={14}

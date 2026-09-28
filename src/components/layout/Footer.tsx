@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { Shield, FileText, Cookie, X, Check } from "lucide-react";
+import { Shield, Cookie, X, Check } from "lucide-react";
 
 export function Footer() {
-  const [activeModal, setActiveModal] = useState<"terms" | "privacy" | "cookies" | null>(null);
+  const [activeModal, setActiveModal] = useState<"privacy" | "cookies" | null>(null);
   const [cookiesSaved, setCookiesSaved] = useState(false);
 
   const handleSaveCookies = () => {
@@ -14,79 +14,52 @@ export function Footer() {
   };
 
   return (
-    <footer className="py-8 text-center border-t border-border/60 bg-surface/40 mt-auto">
-      <div className="max-w-4xl mx-auto px-4 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-slate-500">
-        <p className="select-none">
-          Scheduling by <span className="font-semibold text-navy-800">Divyansh Mishra</span>
-        </p>
-
-        <div className="flex items-center gap-4 text-xs font-medium">
-          <button
-            type="button"
-            onClick={() => setActiveModal("terms")}
-            className="text-slate-500 hover:text-primary transition-colors"
-          >
-            Terms of Service
-          </button>
-          <span>•</span>
-          <button
-            type="button"
-            onClick={() => setActiveModal("privacy")}
-            className="text-slate-500 hover:text-primary transition-colors"
-          >
-            Privacy Notice
-          </button>
-          <span>•</span>
-          <button
-            type="button"
-            onClick={() => setActiveModal("cookies")}
-            className="text-slate-500 hover:text-primary transition-colors"
-          >
-            Cookie Preferences
-          </button>
-        </div>
+    <div className="pt-4 mt-auto border-t border-border">
+      <div className="flex items-center gap-3 text-xs font-medium">
+        <button
+          type="button"
+          onClick={() => setActiveModal("cookies")}
+          className="text-blue-600 hover:underline cursor-pointer"
+        >
+          Cookie settings
+        </button>
+        <span className="text-muted" aria-hidden="true">•</span>
+        <button
+          type="button"
+          onClick={() => setActiveModal("privacy")}
+          className="text-blue-600 hover:underline cursor-pointer"
+        >
+          Privacy Policy
+        </button>
       </div>
 
       {activeModal && (
         <div
           role="dialog"
           aria-modal="true"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-navy-900/60 backdrop-blur-xs text-left"
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs text-left"
         >
-          <div className="card w-full max-w-md p-6 bg-surface shadow-xl space-y-4">
+          <div className="w-full max-w-md p-6 bg-white rounded-xl shadow-xl space-y-4 border border-butter-border">
             <div className="flex items-center justify-between pb-3 border-b border-border">
               <div className="flex items-center gap-2">
-                {activeModal === "terms" && <FileText className="text-primary" size={18} />}
                 {activeModal === "privacy" && <Shield className="text-primary" size={18} />}
                 {activeModal === "cookies" && <Cookie className="text-primary" size={18} />}
-                <h3 className="text-sm font-bold text-navy-900">
-                  {activeModal === "terms" && "Terms of Service"}
-                  {activeModal === "privacy" && "Privacy Notice"}
-                  {activeModal === "cookies" && "Cookie Preferences"}
+                <h3 className="text-sm font-bold text-nearblack">
+                  {activeModal === "privacy" && "Privacy Policy"}
+                  {activeModal === "cookies" && "Cookie Settings"}
                 </h3>
               </div>
               <button
                 type="button"
                 onClick={() => setActiveModal(null)}
                 aria-label="Close dialog"
-                className="p-1 rounded-lg text-slate-400 hover:text-navy-900 hover:bg-slate-100 transition-colors"
+                className="p-1 rounded-lg text-muted hover:text-nearblack hover:bg-butter-light transition-colors cursor-pointer"
               >
                 <X size={16} />
               </button>
             </div>
 
-            <div className="text-xs text-slate-600 space-y-2.5 leading-relaxed">
-              {activeModal === "terms" && (
-                <>
-                  <p>
-                    All consultations with Divyansh Mishra are scheduled for private informational and strategy discussions regarding agricultural land investment principles.
-                  </p>
-                  <p>
-                    Cancellations or rescheduling requests should be submitted at least 24 hours prior to the booked time slot.
-                  </p>
-                </>
-              )}
-
+            <div className="text-xs text-[#4A4A4A] space-y-2.5 leading-relaxed">
               {activeModal === "privacy" && (
                 <>
                   <p>
@@ -103,12 +76,12 @@ export function Footer() {
                   <p className="mb-3">
                     This website only uses strictly necessary local state to maintain your booking session. No third-party tracking cookies are used.
                   </p>
-                  <div className="p-3 bg-slate-50 rounded-xl border border-border space-y-2">
+                  <div className="p-3 bg-butter-light/40 rounded-xl border border-border space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="font-semibold text-navy-900">Essential Session State</span>
+                      <span className="font-semibold text-nearblack">Essential Session State</span>
                       <span className="text-[11px] font-semibold text-emerald-600 uppercase tracking-wide">Always Active</span>
                     </div>
-                    <p className="text-[11px] text-slate-500">
+                    <p className="text-[11px] text-muted">
                       Required for step transitions, calendar date selection, and appointment confirmations.
                     </p>
                   </div>
@@ -121,7 +94,7 @@ export function Footer() {
                 <button
                   type="button"
                   onClick={handleSaveCookies}
-                  className="btn-primary px-4 py-2 min-h-0 text-xs font-semibold"
+                  className="px-4 py-2 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs font-semibold cursor-pointer shadow-xs inline-flex items-center gap-1.5 transition-colors"
                 >
                   {cookiesSaved ? (
                     <>
@@ -135,7 +108,7 @@ export function Footer() {
                 <button
                   type="button"
                   onClick={() => setActiveModal(null)}
-                  className="btn-primary px-4 py-2 min-h-0 text-xs font-semibold"
+                  className="px-4 py-2 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs font-semibold cursor-pointer shadow-xs transition-colors"
                 >
                   Close
                 </button>
@@ -144,6 +117,6 @@ export function Footer() {
           </div>
         </div>
       )}
-    </footer>
+    </div>
   );
 }
