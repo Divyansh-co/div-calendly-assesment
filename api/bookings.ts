@@ -9,6 +9,13 @@ declare const process: {
   env: Record<string, string | undefined>;
 };
 
+// In-memory sliding window rate limiter
+// Note: In serverless environments, in-memory state is per-container instance.
+// For production multi-region deployments, a persistent store (e.g. Upstash Redis) is recommended.
+const rateLimitMap = new Map<string, { count: number; resetTime: number }>();
+const RATE_LIMIT_WINDOW_MS = 60 * 1000;
+const MAX_REQUESTS_PER_WINDOW = 5;
+
 export default async function handler(
   req: VercelRequest,
   res: VercelResponse
@@ -17,6 +24,26 @@ export default async function handler(
     res.setHeader("Allow", "POST");
     res.status(405).json({ error: "Method not allowed" });
     return;
+  }
+
+  // Per-IP rate limiting
+  const forwarded = req.headers["x-forwarded-for"];
+  const clientIp =
+    (Array.isArray(forwarded) ? forwarded[0] : forwarded)?.split(",")[0]?.trim() ||
+    req.socket.remoteAddress ||
+    "127.0.0.1";
+
+  const currentTime = Date.now();
+  const clientLimit = rateLimitMap.get(clientIp);
+  if (clientLimit && currentTime < clientLimit.resetTime) {
+    if (clientLimit.count >= MAX_REQUESTS_PER_WINDOW) {
+      res.setHeader("Retry-After", String(Math.ceil((clientLimit.resetTime - currentTime) / 1000)));
+      res.status(429).json({ error: "Too many booking requests. Please wait a minute and try again." });
+      return;
+    }
+    clientLimit.count += 1;
+  } else {
+    rateLimitMap.set(clientIp, { count: 1, resetTime: currentTime + RATE_LIMIT_WINDOW_MS });
   }
 
   const parsed = bookingSubmissionSchema.safeParse(req.body);

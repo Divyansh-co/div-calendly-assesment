@@ -67,7 +67,7 @@ export function DetailsPage() {
     setFormData((prev) => ({ ...prev, ...updates }));
   };
 
-  const handleConfirmBooking = async () => {
+  const handleConfirmBooking = async (honeypot: string = "") => {
     setServerError(null);
     try {
       const res = await createBooking({
@@ -81,7 +81,7 @@ export function DetailsPage() {
         income: formData.income,
         landSizes: formData.landSize,
         whatsapp: formData.whatsapp,
-        website: "",
+        website: honeypot,
       });
 
       const newBooking = {

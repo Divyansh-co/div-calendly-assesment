@@ -18,7 +18,7 @@ interface BookingFormProps {
   formData: BookingFormData;
   onUpdate: (data: Partial<BookingFormData>) => void;
   onBack: () => void;
-  onConfirm: () => Promise<void> | void;
+  onConfirm: (honeypot?: string) => Promise<void> | void;
   serverError?: string | null;
 }
 
@@ -37,6 +37,7 @@ export function BookingForm({
   const [guestEmail, setGuestEmail] = useState("");
   const [guestError, setGuestError] = useState<string | undefined>();
   const [submitting, setSubmitting] = useState(false);
+  const [honeypot, setHoneypot] = useState("");
 
   const setField = <K extends keyof BookingFormData>(
     field: K,
@@ -86,7 +87,7 @@ export function BookingForm({
 
     setSubmitting(true);
     try {
-      await onConfirm();
+      await onConfirm(honeypot);
     } finally {
       setSubmitting(false);
     }
@@ -130,6 +131,20 @@ export function BookingForm({
       )}
 
       <form onSubmit={handleSubmit} noValidate className="space-y-4">
+        {/* Anti-spam honeypot field (hidden from visual users and screen readers) */}
+        <div className="hidden" aria-hidden="true" style={{ display: "none" }}>
+          <label htmlFor="website">Website</label>
+          <input
+            type="text"
+            id="website"
+            name="website"
+            tabIndex={-1}
+            autoComplete="off"
+            value={honeypot}
+            onChange={(e) => setHoneypot(e.target.value)}
+          />
+        </div>
+
         {QUESTIONS.map((q) => {
           if (q.type === "name") {
             return (
