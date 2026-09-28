@@ -8,7 +8,7 @@ import { CheckboxGroup } from "../ui/CheckboxGroup";
 import { Select } from "../ui/Select";
 import { PhoneInput } from "../ui/PhoneInput";
 import { Button } from "../ui/Button";
-import { validateField, validateGuestEmail, validateAll } from "../../lib/validation";
+import { validateField, validateGuestEmail, validateAll } from "../../../shared/validation";
 import { QUESTIONS, QuestionOption } from "../../constants/questions";
 
 interface BookingFormProps {

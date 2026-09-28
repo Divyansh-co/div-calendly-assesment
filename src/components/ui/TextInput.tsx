@@ -1,7 +1,7 @@
 import { forwardRef } from "react";
 import type { InputHTMLAttributes } from "react";
 import { clsx } from "clsx";
-import { FIELD_MAX_LENGTHS } from "../../lib/validation";
+import { FIELD_MAX_LENGTHS } from "../../../shared/validation";
 
 interface TextInputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
